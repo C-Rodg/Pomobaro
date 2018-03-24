@@ -10,6 +10,8 @@ import Cocoa
 
 class TimerViewController: NSViewController {
 
+    @IBOutlet weak var timerLabel: NSTextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
