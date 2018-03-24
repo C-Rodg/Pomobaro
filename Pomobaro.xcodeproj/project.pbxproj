@@ -11,6 +11,7 @@
 		256E347D206344C400CB9F79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256E347C206344C400CB9F79 /* AppDelegate.swift */; };
 		256E3481206344C400CB9F79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 256E3480206344C400CB9F79 /* Assets.xcassets */; };
 		256E3484206344C400CB9F79 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 256E3482206344C400CB9F79 /* Main.storyboard */; };
+		256E40C12066083C0007E728 /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256E40C02066083C0007E728 /* EventMonitor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		256E3483206344C400CB9F79 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		256E3485206344C400CB9F79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		256E3486206344C400CB9F79 /* Pomobaro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pomobaro.entitlements; sourceTree = "<group>"; };
+		256E40C02066083C0007E728 /* EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +40,7 @@
 			isa = PBXGroup;
 			children = (
 				2500BAC52064A0D6007606EE /* TimerViewController.swift */,
+				256E40C02066083C0007E728 /* EventMonitor.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -142,6 +145,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				256E40C12066083C0007E728 /* EventMonitor.swift in Sources */,
 				2500BAC62064A0D6007606EE /* TimerViewController.swift in Sources */,
 				256E347D206344C400CB9F79 /* AppDelegate.swift in Sources */,
 			);
