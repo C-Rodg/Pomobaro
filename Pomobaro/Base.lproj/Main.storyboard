@@ -695,6 +695,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="startButtonClicked:" target="XfG-lQ-9wD" id="n7j-Ec-2pt"/>
+                                </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QrP-CU-uzv">
                                 <rect key="frame" x="365" y="35" width="75" height="32"/>
@@ -703,6 +706,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="resetButtonClicked:" target="XfG-lQ-9wD" id="8To-0X-DZd"/>
+                                </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ge-LV-bV1">
                                 <rect key="frame" x="18" y="122" width="444" height="92"/>
@@ -720,10 +726,15 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="pauseButtonClicked:" target="XfG-lQ-9wD" id="YAp-gF-e0b"/>
+                                </connections>
                             </button>
                         </subviews>
                     </view>
                     <connections>
+                        <outlet property="pauseButton" destination="rge-VP-bPe" id="M9b-a8-fuj"/>
+                        <outlet property="startButton" destination="GX7-HW-U2k" id="cRp-yR-i3Q"/>
                         <outlet property="timerLabel" destination="5ge-LV-bV1" id="9kc-7v-UlB"/>
                     </connections>
                 </viewController>
