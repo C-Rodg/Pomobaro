@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2500BAC62064A0D6007606EE /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2500BAC52064A0D6007606EE /* TimerViewController.swift */; };
+		255841AE206F3E970037FD60 /* PomodoroTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255841AD206F3E970037FD60 /* PomodoroTimer.swift */; };
 		256E347D206344C400CB9F79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256E347C206344C400CB9F79 /* AppDelegate.swift */; };
 		256E3481206344C400CB9F79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 256E3480206344C400CB9F79 /* Assets.xcassets */; };
 		256E3484206344C400CB9F79 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 256E3482206344C400CB9F79 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 
 /* Begin PBXFileReference section */
 		2500BAC52064A0D6007606EE /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
+		255841AD206F3E970037FD60 /* PomodoroTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroTimer.swift; sourceTree = "<group>"; };
 		256E3479206344C400CB9F79 /* Pomobaro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pomobaro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		256E347C206344C400CB9F79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		256E3480206344C400CB9F79 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -45,6 +47,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		255841AC206F3E390037FD60 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				255841AD206F3E970037FD60 /* PomodoroTimer.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		256E3470206344C300CB9F79 = {
 			isa = PBXGroup;
 			children = (
@@ -64,6 +74,7 @@
 		256E347B206344C400CB9F79 /* Pomobaro */ = {
 			isa = PBXGroup;
 			children = (
+				255841AC206F3E390037FD60 /* Models */,
 				2500BAC42064A0A9007606EE /* Views */,
 				256E347C206344C400CB9F79 /* AppDelegate.swift */,
 				256E3480206344C400CB9F79 /* Assets.xcassets */,
@@ -147,6 +158,7 @@
 			files = (
 				256E40C12066083C0007E728 /* EventMonitor.swift in Sources */,
 				2500BAC62064A0D6007606EE /* TimerViewController.swift in Sources */,
+				255841AE206F3E970037FD60 /* PomodoroTimer.swift in Sources */,
 				256E347D206344C400CB9F79 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
