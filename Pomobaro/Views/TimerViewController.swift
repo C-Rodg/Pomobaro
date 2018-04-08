@@ -11,10 +11,11 @@ import Cocoa
 class TimerViewController: NSViewController {
 
     // Timer Settings and flags
-    var seconds = 1500;
+    var currentSeconds = 1500;
     var timer = Timer();
     var isTimerRunning = false;
     var resumeTapped = false;
+    let pomodoroInstance: PomodoroTimer = PomodoroTimer()
     
     
     // Outlets
@@ -37,17 +38,19 @@ class TimerViewController: NSViewController {
     // EVENT - Reset All clicked
     @IBAction func resetButtonClicked(_ sender: Any) {
         timer.invalidate()
-        seconds = 1500
-        timerLabel.stringValue = getTimeString(time: TimeInterval(seconds))
+        currentSeconds = pomodoroInstance.resetTimer()
+        timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
         isTimerRunning = false
-        
-        
         playPauseButton.title = "Play"
     }
     
     // EVENT - Reset Interval clicked
     @IBAction func resetIntervalButtonClicked(_ sender: NSButton) {
-        print("Test")
+        timer.invalidate()
+        currentSeconds = pomodoroInstance.getCurrentIntervalTime()
+        timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
+        isTimerRunning = false
+        playPauseButton.title = "Play"
     }
     
     // Run Timer loop
@@ -59,12 +62,17 @@ class TimerViewController: NSViewController {
     
     // Update the timer label view
     @objc func updateTimer() -> Void {
-        if seconds < 1 {
-            timer.invalidate()
-            // SEND ALERT AND MOVE TO NEXT
+        if currentSeconds < 1 {
+            if let newInterval = pomodoroInstance.getNextInterval() {
+                currentSeconds = newInterval
+                timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
+            } else {
+                timer.invalidate()
+                // Show complete message
+            }
         } else {
-            seconds -= 1;
-            timerLabel.stringValue = getTimeString(time: TimeInterval(seconds))
+            currentSeconds -= 1;
+            timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
         }
     }
     
@@ -78,6 +86,9 @@ class TimerViewController: NSViewController {
     // View has loaded
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        currentSeconds = pomodoroInstance.getCurrentIntervalTime()
+        timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
     }
     
 }
