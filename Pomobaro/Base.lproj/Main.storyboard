@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -688,15 +688,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="350" height="350"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GX7-HW-U2k">
-                                <rect key="frame" x="20" y="2" width="70" height="32"/>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QrP-CU-uzv">
+                                <rect key="frame" x="15" y="51" width="93" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Start" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QXL-Un-jQP">
+                                <buttonCell key="cell" type="push" title="Reset All" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="nUY-Bd-sTJ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="startButtonClicked:" target="XfG-lQ-9wD" id="n7j-Ec-2pt"/>
+                                    <action selector="resetButtonClicked:" target="XfG-lQ-9wD" id="8To-0X-DZd"/>
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ge-LV-bV1">
@@ -708,33 +708,32 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rge-VP-bPe">
-                                <rect key="frame" x="129" y="2" width="77" height="32"/>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fns-wa-WNg">
+                                <rect key="frame" x="14" y="18" width="123" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Pause" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WQl-tg-Fug">
+                                <buttonCell key="cell" type="push" title="Reset Interval" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VM4-gT-NKk">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="pauseButtonClicked:" target="XfG-lQ-9wD" id="YAp-gF-e0b"/>
+                                    <action selector="resetIntervalButtonClicked:" target="XfG-lQ-9wD" id="Gkg-0D-Ygf"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QrP-CU-uzv">
-                                <rect key="frame" x="261" y="13" width="75" height="32"/>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GX7-HW-U2k">
+                                <rect key="frame" x="14" y="84" width="66" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="nUY-Bd-sTJ">
+                                <buttonCell key="cell" type="push" title="Play" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QXL-Un-jQP">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="resetButtonClicked:" target="XfG-lQ-9wD" id="8To-0X-DZd"/>
+                                    <action selector="playPauseButtonClicked:" target="XfG-lQ-9wD" id="Gd0-1H-lkF"/>
                                 </connections>
                             </button>
                         </subviews>
                     </view>
                     <connections>
-                        <outlet property="pauseButton" destination="rge-VP-bPe" id="M9b-a8-fuj"/>
-                        <outlet property="startButton" destination="GX7-HW-U2k" id="cRp-yR-i3Q"/>
+                        <outlet property="playPauseButton" destination="GX7-HW-U2k" id="OLf-0g-yPe"/>
                         <outlet property="timerLabel" destination="5ge-LV-bV1" id="9kc-7v-UlB"/>
                     </connections>
                 </viewController>

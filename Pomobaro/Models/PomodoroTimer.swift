@@ -11,15 +11,16 @@ import Cocoa
 // Timer class
 class PomodoroTimer {
     var currentIndex: Int = 0
-    let timeArray: [TimeInterval] = [
-        TimeInterval(timer: 1500, isBreak: false),
-        TimeInterval(timer: 300, isBreak: true),
-        TimeInterval(timer: 1500, isBreak: false),
-        TimeInterval(timer: 300, isBreak: true),
-        TimeInterval(timer: 1500, isBreak: false),
-        TimeInterval(timer: 300, isBreak: true),
-        TimeInterval(timer: 1500, isBreak: false),
-        TimeInterval(timer: 900, isBreak: true)]
+    var pomodoroCount: Int = 0
+    let timeArray: [PomodoroTimeInterval] = [
+        PomodoroTimeInterval(timer: 1500, isBreak: false),
+        PomodoroTimeInterval(timer: 300, isBreak: true),
+        PomodoroTimeInterval(timer: 1500, isBreak: false),
+        PomodoroTimeInterval(timer: 300, isBreak: true),
+        PomodoroTimeInterval(timer: 1500, isBreak: false),
+        PomodoroTimeInterval(timer: 300, isBreak: true),
+        PomodoroTimeInterval(timer: 1500, isBreak: false),
+        PomodoroTimeInterval(timer: 900, isBreak: true)]
     
     
     // Reset entire timer
@@ -34,7 +35,7 @@ class PomodoroTimer {
 }
 
 // Time interval
-class TimeInterval {
+class PomodoroTimeInterval {
     var isBreak: Bool
     var timer: Int
     

@@ -16,45 +16,38 @@ class TimerViewController: NSViewController {
     var isTimerRunning = false;
     var resumeTapped = false;
     
+    
     // Outlets
     @IBOutlet weak var timerLabel: NSTextField!
-    @IBOutlet weak var startButton: NSButton!
-    @IBOutlet weak var pauseButton: NSButton!
+    @IBOutlet weak var playPauseButton: NSButton!
     
-    // EVENT - Start timer button clicked
-    @IBAction func startButtonClicked(_ sender: Any) {
+    // EVENT - Play/pause button clicked
+    @IBAction func playPauseButtonClicked(_ sender: Any) {
         if isTimerRunning == false {
             runTimer()
-            startButton.isEnabled = false
-        }
-    }
-    
-    // EVENT - Pause button clicked, toggling
-    @IBAction func pauseButtonClicked(_ sender: Any) {
-        if resumeTapped == false {
-            timer.invalidate()
-            resumeTapped = true
-            pauseButton.title = "Resume"
+            playPauseButton.title = "Pause"
         } else {
-            runTimer()
-            resumeTapped = false
-            pauseButton.title = "Pause"
+            timer.invalidate()
+            playPauseButton.title = "Play"
+            isTimerRunning = false
         }
     }
     
     
-    // EVENT - Reset button clicked
+    // EVENT - Reset All clicked
     @IBAction func resetButtonClicked(_ sender: Any) {
         timer.invalidate()
         seconds = 1500
         timerLabel.stringValue = getTimeString(time: TimeInterval(seconds))
         isTimerRunning = false
         
-        startButton.isEnabled = true
-        pauseButton.title = "Pause"
-        pauseButton.isEnabled = false
-        resumeTapped = false
         
+        playPauseButton.title = "Play"
+    }
+    
+    // EVENT - Reset Interval clicked
+    @IBAction func resetIntervalButtonClicked(_ sender: NSButton) {
+        print("Test")
     }
     
     // Run Timer loop
@@ -62,7 +55,6 @@ class TimerViewController: NSViewController {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(TimerViewController.updateTimer)), userInfo: nil, repeats: true)
         
         isTimerRunning = true
-        pauseButton.isEnabled = true
     }
     
     // Update the timer label view
@@ -86,8 +78,6 @@ class TimerViewController: NSViewController {
     // View has loaded
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        pauseButton.isEnabled = false
     }
     
 }
