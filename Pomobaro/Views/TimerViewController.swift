@@ -11,10 +11,11 @@ import Cocoa
 class TimerViewController: NSViewController {
 
     // Timer Settings and flags
-    var currentSeconds = 1500;
-    var timer = Timer();
-    var isTimerRunning = false;
-    var resumeTapped = false;
+    var totalSeconds: Double = 25//1500
+    var currentSeconds: Double = 25//1500
+    var timer = Timer()
+    var isTimerRunning = false
+    var resumeTapped = false
     let pomodoroInstance: PomodoroTimer = PomodoroTimer()
     
     // Animation
@@ -41,6 +42,8 @@ class TimerViewController: NSViewController {
     @IBAction func resetButtonClicked(_ sender: Any) {
         timer.invalidate()
         currentSeconds = pomodoroInstance.resetTimer()
+        totalSeconds = currentSeconds
+        shapeLayer.strokeEnd = 0
         timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
         isTimerRunning = false
         playPauseButton.title = "Play"
@@ -50,6 +53,8 @@ class TimerViewController: NSViewController {
     @IBAction func resetIntervalButtonClicked(_ sender: NSButton) {
         timer.invalidate()
         currentSeconds = pomodoroInstance.getCurrentIntervalTime()
+        totalSeconds = currentSeconds
+        shapeLayer.strokeEnd = 0
         timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
         isTimerRunning = false
         playPauseButton.title = "Play"
@@ -67,6 +72,7 @@ class TimerViewController: NSViewController {
         if currentSeconds < 1 {
             if let newInterval = pomodoroInstance.getNextInterval() {
                 currentSeconds = newInterval
+                totalSeconds = newInterval
                 timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
             } else {
                 timer.invalidate()
@@ -75,6 +81,7 @@ class TimerViewController: NSViewController {
         } else {
             currentSeconds -= 1;
             timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
+            shapeLayer.strokeEnd = CGFloat((totalSeconds - currentSeconds) / totalSeconds)
         }
     }
     
@@ -85,43 +92,53 @@ class TimerViewController: NSViewController {
         return String(format: "%02i:%02i", minutes, seconds);
     }
     
+    // Setup Initial tracks
+    func setupInitialTracks() -> Void {
+        let circularPath = NSBezierPath()
+        circularPath.appendArc(withCenter: .zero, radius: CGFloat(125), startAngle: CGFloat(0), endAngle: CGFloat(2 * Double.pi), clockwise: true)
+        
+        // Track Layer #1
+        let trackLayer = CAShapeLayer()
+        let extraTrackLayer = CAShapeLayer()
+        trackLayer.path = circularPath.cgPath
+        extraTrackLayer.path = circularPath.cgPath
+        trackLayer.strokeColor = NSColor.lightGray.cgColor
+        extraTrackLayer.strokeColor = NSColor.lightGray.cgColor
+        trackLayer.lineWidth = 6
+        extraTrackLayer.lineWidth = 6
+        trackLayer.fillColor = NSColor.clear.cgColor
+        extraTrackLayer.fillColor = NSColor.clear.cgColor
+        extraTrackLayer.transform = CATransform3DMakeRotation((CGFloat.pi / 2), 0, 0, 1)
+        trackLayer.position = CGPoint(x: 175, y: 200)
+        extraTrackLayer.position = CGPoint(x: 175, y: 200)
+        
+        // Add track layers to view
+        view.layer?.addSublayer(trackLayer)
+        view.layer?.addSublayer(extraTrackLayer)
+        
+        // Setup progress
+        shapeLayer.path = circularPath.cgPath
+        shapeLayer.strokeColor = NSColor.red.cgColor
+        shapeLayer.lineWidth = 6
+        shapeLayer.fillColor = NSColor.clear.cgColor
+        //shapeLayer.lineCap = kCALineCapRound
+        shapeLayer.position = CGPoint(x: 175, y: 200)
+        shapeLayer.transform = CATransform3DMakeRotation((CGFloat.pi / 2), 0, 0, 1)
+        shapeLayer.strokeEnd = 0
+        view.layer?.addSublayer(shapeLayer)
+    }
+    
     // View has loaded
     override func viewDidLoad() {
         super.viewDidLoad()
         
         currentSeconds = pomodoroInstance.getCurrentIntervalTime()
         timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
-        
-        // ANIMATION
-        let trackLayer = CAShapeLayer()
-        let circularPath = NSBezierPath()
-        circularPath.appendArc(withCenter: .zero, radius: 125, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
-        trackLayer.path = circularPath.cgPath
-        trackLayer.strokeColor = NSColor.lightGray.cgColor
-        trackLayer.lineWidth = 10
-        trackLayer.fillColor = NSColor.clear.cgColor
-        trackLayer.lineCap = kCALineCapRound
-        
-        // TODO: SET THIS TO CENTER OF VIEW
-        trackLayer.position = CGPoint(x: 175, y: 200)
-        
-        view.layer?.addSublayer(trackLayer)
-        shapeLayer.path = circularPath.cgPath
-        shapeLayer.strokeColor = NSColor.red.cgColor
-        shapeLayer.lineWidth = 10
-        shapeLayer.fillColor = NSColor.clear.cgColor
-        shapeLayer.lineCap = kCALineCapRound
-        shapeLayer.position = CGPoint(x: 175, y: 200)
-        shapeLayer.transform = CATransform3DMakeRotation(-CGFloat.pi / 2, 0, 0, 1)
-        shapeLayer.strokeEnd = 0
-        view.layer?.addSublayer(shapeLayer)
-        
-        
-        
+        setupInitialTracks()
     }
-    
 }
 
+// Add cgPath to NSBezierPath
 extension NSBezierPath {
     public var cgPath: CGPath {
         let path = CGMutablePath()
@@ -129,14 +146,12 @@ extension NSBezierPath {
         for i in 0 ..< self.elementCount {
             let type = self.element(at: i, associatedPoints: &points)
             switch type {
-            case .moveToBezierPathElement:
-                path.move(to: points[0])
-            case .lineToBezierPathElement:
-                path.addLine(to: points[0])
-            case .curveToBezierPathElement:
-                path.addCurve(to: points[2], control1: points[0], control2: points[1])
-            case .closePathBezierPathElement:
-                path.closeSubpath()
+            case .moveToBezierPathElement: path.move(to: CGPoint(x: points[0].x, y: points[0].y) )
+            case .lineToBezierPathElement: path.addLine(to: CGPoint(x: points[0].x, y: points[0].y) )
+            case .curveToBezierPathElement: path.addCurve(      to: CGPoint(x: points[2].x, y: points[2].y),
+                                                                control1: CGPoint(x: points[0].x, y: points[0].y),
+                                                                control2: CGPoint(x: points[1].x, y: points[1].y) )
+            case .closePathBezierPathElement: path.closeSubpath()
             }
         }
         return path
