@@ -70,6 +70,9 @@ class TimerViewController: NSViewController {
     // Update the timer label view
     @objc func updateTimer() -> Void {
         if currentSeconds < 1 {
+            
+            // TODO: START HERE, make circle not animate backwards on complete...
+            
             if let newInterval = pomodoroInstance.getNextInterval() {
                 currentSeconds = newInterval
                 totalSeconds = newInterval
@@ -96,6 +99,8 @@ class TimerViewController: NSViewController {
     func setupInitialTracks() -> Void {
         let circularPath = NSBezierPath()
         circularPath.appendArc(withCenter: .zero, radius: CGFloat(125), startAngle: CGFloat(0), endAngle: CGFloat(2 * Double.pi), clockwise: true)
+        
+        circularPath.close()
         
         // Track Layer #1
         let trackLayer = CAShapeLayer()
@@ -124,6 +129,7 @@ class TimerViewController: NSViewController {
         //shapeLayer.lineCap = kCALineCapRound
         shapeLayer.position = CGPoint(x: 175, y: 200)
         shapeLayer.transform = CATransform3DMakeRotation((CGFloat.pi / 2), 0, 0, 1)
+        shapeLayer.strokeStart = 0
         shapeLayer.strokeEnd = 0
         view.layer?.addSublayer(shapeLayer)
     }
