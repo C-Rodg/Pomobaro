@@ -20,11 +20,13 @@ class TimerViewController: NSViewController {
     
     // Animation
     let shapeLayer = CAShapeLayer()
+    var pomoIndicators: [CAShapeLayer] = []
     
     // Outlets
     @IBOutlet weak var timerLabel: NSTextField!
     @IBOutlet weak var playPauseButton: NSButton!
-    
+    @IBOutlet weak var resetIntervalButton: NSButton!
+    @IBOutlet weak var resetAllButton: NSButton!
     
     // Initial Setup
     override func viewDidLoad() {
@@ -35,88 +37,9 @@ class TimerViewController: NSViewController {
         currentSeconds = currentPomodoroInterval.timer
         timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
         setupInitialTracks()
-    }
-    
-    // EVENT - Play/pause button clicked
-    @IBAction func playPauseButtonClicked(_ sender: Any) {
-        if isTimerRunning == false {
-            runTimer()
-            playPauseButton.title = "Pause"
-        } else {
-            timer.invalidate()
-            playPauseButton.title = "Play"
-            isTimerRunning = false
-        }
-    }
-    
-    
-    // EVENT - Reset All clicked
-    @IBAction func resetButtonClicked(_ sender: Any) {
-        timer.invalidate()
-        currentPomodoroInterval = pomodoroInstance.resetTimer()
-        currentSeconds = currentPomodoroInterval.timer
-        shapeLayer.strokeEnd = 0
-        timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
-        isTimerRunning = false
-        playPauseButton.title = "Play"
-    }
-    
-    // EVENT - Reset Interval clicked
-    @IBAction func resetIntervalButtonClicked(_ sender: NSButton) {
-        timer.invalidate()
-        currentPomodoroInterval  = pomodoroInstance.getCurrentInterval()
-        currentSeconds = currentPomodoroInterval.timer
-        shapeLayer.strokeEnd = 0
-        timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
-        isTimerRunning = false
-        playPauseButton.title = "Play"
-    }
-    
-    // Run Timer loop
-    func runTimer() -> Void {
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(TimerViewController.updateTimer)), userInfo: nil, repeats: true)
         
-        isTimerRunning = true
-    }
-    
-    // Update the timer label view
-    @objc func updateTimer() -> Void {
-        if currentSeconds >= 1 {
-            // Update progress path and label
-            currentSeconds -= 1;
-            timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
-            let strokeEndValue = ((currentPomodoroInterval.timer - currentSeconds) / currentPomodoroInterval.timer)
-            shapeLayer.strokeEnd = CGFloat(strokeEndValue)
-            
-            // TODO: DETERMINE CORRECT COLOR
-            shapeLayer.strokeColor = NSColor.red.cgColor
-            
-        } else {
-            // Timer complete, get next interval if available
-            if let newInterval = pomodoroInstance.getNextInterval() {
-                currentPomodoroInterval = newInterval
-                currentSeconds = newInterval.timer
-                timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
-                CATransaction.begin()
-                CATransaction.setDisableActions(true)
-                shapeLayer.strokeEnd = CGFloat(0)
-                CATransaction.commit()
-            } else {
-                // Stop timer completely
-                timer.invalidate()
-                
-                // TODO: SHOW DONE, PLAY SOUND, SHOW CORRECT COLOR
-                print("ALL DONE WITH TIMER")
-                shapeLayer.strokeColor = NSColor.green.cgColor
-            }
-        }
-    }
-    
-    // Format time into display string
-    func getTimeString(time: TimeInterval) -> String {
-        let minutes = Int(time) / 60 % 60
-        let seconds = Int(time) % 60
-        return String(format: "%02i:%02i", minutes, seconds);
+        // Allow Notifications
+        NSUserNotificationCenter.default.delegate = self
     }
     
     // Setup Initial tracks
@@ -139,7 +62,7 @@ class TimerViewController: NSViewController {
         
         // Setup progress
         shapeLayer.path = circularPath.cgPath
-        shapeLayer.strokeColor = NSColor.red.cgColor
+        shapeLayer.strokeColor = color(from : ColorTheme.blue.rawValue)
         shapeLayer.lineWidth = 6
         shapeLayer.fillColor = NSColor.clear.cgColor
         //shapeLayer.lineCap = kCALineCapRound
@@ -149,6 +72,233 @@ class TimerViewController: NSViewController {
         shapeLayer.strokeEnd = 0
         shapeLayer.fillMode = kCAFillModeForwards
         view.layer?.addSublayer(shapeLayer)
+        
+        // Create indicators
+        createPomodoroIndicators()
+    }
+    
+    // Generate pomodoro indicators
+    func createPomodoroIndicators() {
+        let xPaths: [Int] = [144, 164, 184, 204]
+        for x in xPaths {
+            let circularPath = NSBezierPath()
+            circularPath.appendArc(withCenter: .zero, radius: CGFloat(6), startAngle: CGFloat(0), endAngle: CGFloat(2 * Double.pi), clockwise: true)
+            circularPath.close()
+            
+            let trackLayer = CAShapeLayer()
+            trackLayer.path = circularPath.cgPath
+            trackLayer.lineWidth = 2
+            trackLayer.fillColor = NSColor.clear.cgColor
+            trackLayer.strokeColor = color(from: ColorTheme.blue.rawValue, withAlpha: 0.4)
+            trackLayer.position = CGPoint(x: x, y: 135)
+            view.layer?.addSublayer(trackLayer)
+            pomoIndicators.append(trackLayer)
+        }
+    }
+    
+    func changePomodoroColor(_ isBreak: Bool) {
+        for pomo in pomoIndicators {
+            var instanceColor = ColorTheme.blue.rawValue
+            if isBreak {
+                instanceColor = ColorTheme.red.rawValue
+            }
+            if pomo.fillColor?.alpha == CGColor.clear.alpha {
+                pomo.strokeColor = color(from: instanceColor, withAlpha: 0.4)
+            } else {
+                pomo.strokeColor = color(from: instanceColor)
+                pomo.fillColor = color(from: instanceColor)
+            }
+        }
+    }
+    
+    // Reset Pomodor indicators
+    func resetPomodoroIndicators() {
+        for pomo in pomoIndicators {
+            pomo.removeAllAnimations()
+            pomo.fillColor = CGColor.clear
+            pomo.strokeColor = color(from: ColorTheme.blue.rawValue, withAlpha: 0.4)
+        }
+    }
+    
+    // Add pulsing and fill effect
+    func completeIndividualPomoIndicator(count: Int) {
+        animatePomoIndicator(for: count-1, with: ColorTheme.blue.rawValue)
+    }
+    
+    // Helper animation for pomo indicators
+    func animatePomoIndicator(for i: Int, with stringColor: String) {
+        let indicator = pomoIndicators[i]
+        indicator.fillColor = color(from: stringColor)
+        indicator.strokeColor = color(from: stringColor)
+        let animationScale = CABasicAnimation(keyPath: "transform.scale")
+        animationScale.toValue = 1.3
+        animationScale.duration = 0.7
+        animationScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animationScale.autoreverses = true
+        animationScale.repeatCount = 3
+        
+        indicator.add(animationScale, forKey: "pulsing")
+    }
+    
+    // All pomodoros are completed
+    func completeAllPomoIndicitator() {
+        for index in 0..<pomoIndicators.count {
+            animatePomoIndicator(for: index, with: "2ecc71")
+        }
+    }
+    
+    // EVENT - Play/pause button clicked
+    @IBAction func playPauseButtonClicked(_ sender: Any) {
+        if isTimerRunning == false {
+            runTimer()
+            playPauseButton.title = "Pause"
+        } else {
+            timer.invalidate()
+            playPauseButton.title = "Play"
+            isTimerRunning = false
+        }
+    }
+    
+    
+    // EVENT - Reset All clicked
+    @IBAction func resetButtonClicked(_ sender: Any) {
+        playPauseButton.isHidden = false
+        resetIntervalButton.isHidden = false
+        resetAllButton.title = "Reset All"
+        resetPomodoroIndicators()
+        
+        timer.invalidate()
+        currentPomodoroInterval = pomodoroInstance.resetTimer()
+        currentSeconds = currentPomodoroInterval.timer
+        shapeLayer.strokeEnd = 0
+        shapeLayer.strokeColor = getTrackColor()
+        timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
+        isTimerRunning = false
+        playPauseButton.title = "Play"
+    }
+    
+    // EVENT - Reset Interval clicked
+    @IBAction func resetIntervalButtonClicked(_ sender: NSButton) {
+        timer.invalidate()
+        currentPomodoroInterval  = pomodoroInstance.getCurrentInterval()
+        currentSeconds = currentPomodoroInterval.timer
+        shapeLayer.strokeEnd = 0
+        shapeLayer.strokeColor = getTrackColor()
+        timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
+        isTimerRunning = false
+        playPauseButton.title = "Play"
+    }
+    
+    // Run Timer loop
+    func runTimer() -> Void {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(TimerViewController.updateTimer)), userInfo: nil, repeats: true)
+        
+        isTimerRunning = true
+    }
+    
+    // Update the timer label view
+    @objc func updateTimer() -> Void {
+        if currentSeconds >= 1 {
+            if currentSeconds == currentPomodoroInterval.timer {
+                shapeLayer.opacity = 1
+            }
+            // Update progress path and label
+            currentSeconds -= 1;
+            timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
+            let strokeEndValue = ((currentPomodoroInterval.timer - currentSeconds) / currentPomodoroInterval.timer)
+            shapeLayer.strokeEnd = CGFloat(strokeEndValue)
+        } else {
+            // Timer complete, get next interval if available
+            if let newInterval = pomodoroInstance.getNextInterval() {
+                let isBreak = newInterval.isBreak
+                // Update view
+                currentPomodoroInterval = newInterval
+                currentSeconds = newInterval.timer
+                timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
+                shapeLayer.opacity = 0
+                CATransaction.begin()
+                CATransaction.setDisableActions(true)
+                shapeLayer.strokeEnd = CGFloat(0)
+                CATransaction.commit()
+                shapeLayer.strokeColor = getTrackColor()
+                
+                // Show notifications and update indicators
+                let pomodoroCount = pomodoroInstance.getPomodoroCount()
+                var title = "Back to Work!"
+                var msg = "Break is over. Let's get back to work."
+                
+                // Set Notification mesage
+                if isBreak {
+                    title = "Short Break!"
+                    if (pomodoroCount == 1) {
+                        msg = "1 pomodoro down. Let's take a short break."
+                    } else if newInterval.isLongBreak {
+                        title = "Long Break!"
+                        msg = "4 pomodoros down. Let's take a long break."
+                    } else {
+                        msg = "\(pomodoroCount) pomodoros down. Let's take another short break."
+                    }
+                    completeIndividualPomoIndicator(count: pomodoroCount)
+                }
+                showNotification(withTitle: title, withBody: msg)
+                changePomodoroColor(isBreak)
+            } else {
+                // Stop timer completely
+                timer.invalidate()
+                playPauseButton.isHidden = true
+                resetIntervalButton.isHidden = true
+                resetAllButton.title = "Restart"
+                isTimerRunning = false
+                
+                showNotification(withTitle: "Timer Complete!", withBody: "Long break is over. Back to work.")
+                shapeLayer.strokeColor = color(from: ColorTheme.green.rawValue)
+                completeAllPomoIndicitator()
+            }
+        }
+    }
+    
+    // Format time into display string
+    func getTimeString(time: TimeInterval) -> String {
+        let minutes = Int(time) / 60 % 60
+        let seconds = Int(time) % 60
+        return String(format: "%02i:%02i", minutes, seconds);
+    }
+    
+    // Get proper track color based off of application state
+    func getTrackColor() -> CGColor {
+        if currentPomodoroInterval.isBreak {
+            return color(from: ColorTheme.red.rawValue)
+        } else {
+            return color(from: ColorTheme.blue.rawValue)
+        }
+    }
+    
+    // HELPER - Convert Hex value to CGColor
+    func color(from hexString : String, withAlpha alpha: CGFloat = 1.0) -> CGColor
+    {
+        if let rgbValue = UInt(hexString, radix: 16) {
+            let red   =  CGFloat((rgbValue >> 16) & 0xff) / 255
+            let green =  CGFloat((rgbValue >>  8) & 0xff) / 255
+            let blue  =  CGFloat((rgbValue      ) & 0xff) / 255
+            return NSColor(red: red, green: green, blue: blue, alpha: alpha).cgColor
+        } else {
+            return NSColor.black.cgColor
+        }
+    }
+}
+
+extension TimerViewController: NSUserNotificationCenterDelegate {
+    func showNotification(withTitle title: String, withBody body: String) -> Void {
+        let notification = NSUserNotification()
+        notification.title = title
+        notification.subtitle = body
+        notification.soundName = NSUserNotificationDefaultSoundName
+        NSUserNotificationCenter.default.deliver(notification)
+    }
+    
+    func userNotificationCenter(_ center: NSUserNotificationCenter,
+                                shouldPresent notification: NSUserNotification) -> Bool {
+        return true
     }
 }
 
@@ -182,4 +332,11 @@ extension TimerViewController {
         }
         return vc
     }
+}
+
+// Color theme
+enum ColorTheme: String {
+    case red = "d46164"
+    case blue = "109bde"
+    case green = "2ecc71"
 }

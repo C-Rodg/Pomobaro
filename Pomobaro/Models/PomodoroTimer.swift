@@ -55,6 +55,11 @@ class PomodoroTimer {
     func getCurrentInterval() -> PomodoroTimeInterval {
         return timeArray[currentIndex]
     }
+    
+    // Get Pomodoro Count
+    func getPomodoroCount() -> Int {
+        return pomodoroCount
+    }
 }
 
 // Time interval
