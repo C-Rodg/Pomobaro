@@ -21,25 +21,25 @@ class PomodoroTimer {
 //        PomodoroTimeInterval(timer: 300, isBreak: true),
 //        PomodoroTimeInterval(timer: 1500, isBreak: false),
 //        PomodoroTimeInterval(timer: 900, isBreak: true, isLongBreak: true)]
-        PomodoroTimeInterval(timer: 25, isBreak: false),
+        PomodoroTimeInterval(timer: 10, isBreak: false),
         PomodoroTimeInterval(timer: 5, isBreak: true),
-        PomodoroTimeInterval(timer: 25, isBreak: false),
+        PomodoroTimeInterval(timer: 10, isBreak: false),
         PomodoroTimeInterval(timer: 5, isBreak: true),
-        PomodoroTimeInterval(timer: 25, isBreak: false),
+        PomodoroTimeInterval(timer: 10, isBreak: false),
         PomodoroTimeInterval(timer: 5, isBreak: true),
-        PomodoroTimeInterval(timer: 25, isBreak: false),
-        PomodoroTimeInterval(timer: 15, isBreak: true, isLongBreak: true)]
+        PomodoroTimeInterval(timer: 10, isBreak: false),
+        PomodoroTimeInterval(timer: 8, isBreak: true, isLongBreak: true)]
     
     
     // Reset entire timer
-    func resetTimer() -> Double {
+    func resetTimer() -> PomodoroTimeInterval {
         currentIndex = 0
         pomodoroCount = 0
-        return timeArray[currentIndex].timer
+        return timeArray[currentIndex]
     }
     
     // Move to next interval
-    func getNextInterval() -> Double? {
+    func getNextInterval() -> PomodoroTimeInterval? {
         if currentIndex + 1 >= timeArray.count {
             return nil
         } else {
@@ -47,13 +47,13 @@ class PomodoroTimer {
                 pomodoroCount += 1
             }
             currentIndex += 1
-            return timeArray[currentIndex].timer
+            return timeArray[currentIndex]
         }
     }
     
     // Get current interval
-    func getCurrentIntervalTime() -> Double {
-        return timeArray[currentIndex].timer
+    func getCurrentInterval() -> PomodoroTimeInterval {
+        return timeArray[currentIndex]
     }
 }
 

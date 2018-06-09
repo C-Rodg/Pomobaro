@@ -31,12 +31,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Assign view controller to popup content
         popover.contentViewController = TimerViewController.freshController()
         
-        // Setup event monitoring
-        eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
-            if let strongSelf = self, strongSelf.popover.isShown {
-                strongSelf.closePopover(sender: event)
-            }
-        }
+        // Setup event monitoring --- DISABLED FOR NOW
+//        eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
+//            if let strongSelf = self, strongSelf.popover.isShown {
+//                strongSelf.closePopover(sender: event)
+//            }
+//        }
     }
     
     // Status bar button clicked

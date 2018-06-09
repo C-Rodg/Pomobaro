@@ -11,12 +11,12 @@ import Cocoa
 class TimerViewController: NSViewController {
 
     // Timer Settings and flags
-    var totalSeconds: Double = 25//1500
-    var currentSeconds: Double = 25//1500
+    var currentSeconds: Double = 10//1500
     var timer = Timer()
     var isTimerRunning = false
     var resumeTapped = false
     let pomodoroInstance: PomodoroTimer = PomodoroTimer()
+    var currentPomodoroInterval: PomodoroTimeInterval = PomodoroTimeInterval(timer: 15, isBreak: false)
     
     // Animation
     let shapeLayer = CAShapeLayer()
@@ -24,6 +24,18 @@ class TimerViewController: NSViewController {
     // Outlets
     @IBOutlet weak var timerLabel: NSTextField!
     @IBOutlet weak var playPauseButton: NSButton!
+    
+    
+    // Initial Setup
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Get inital values
+        currentPomodoroInterval = pomodoroInstance.getCurrentInterval()
+        currentSeconds = currentPomodoroInterval.timer
+        timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
+        setupInitialTracks()
+    }
     
     // EVENT - Play/pause button clicked
     @IBAction func playPauseButtonClicked(_ sender: Any) {
@@ -41,8 +53,8 @@ class TimerViewController: NSViewController {
     // EVENT - Reset All clicked
     @IBAction func resetButtonClicked(_ sender: Any) {
         timer.invalidate()
-        currentSeconds = pomodoroInstance.resetTimer()
-        totalSeconds = currentSeconds
+        currentPomodoroInterval = pomodoroInstance.resetTimer()
+        currentSeconds = currentPomodoroInterval.timer
         shapeLayer.strokeEnd = 0
         timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
         isTimerRunning = false
@@ -52,8 +64,8 @@ class TimerViewController: NSViewController {
     // EVENT - Reset Interval clicked
     @IBAction func resetIntervalButtonClicked(_ sender: NSButton) {
         timer.invalidate()
-        currentSeconds = pomodoroInstance.getCurrentIntervalTime()
-        totalSeconds = currentSeconds
+        currentPomodoroInterval  = pomodoroInstance.getCurrentInterval()
+        currentSeconds = currentPomodoroInterval.timer
         shapeLayer.strokeEnd = 0
         timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
         isTimerRunning = false
@@ -69,22 +81,34 @@ class TimerViewController: NSViewController {
     
     // Update the timer label view
     @objc func updateTimer() -> Void {
-        if currentSeconds < 1 {
-            
-            // TODO: START HERE, make circle not animate backwards on complete...
-            
-            if let newInterval = pomodoroInstance.getNextInterval() {
-                currentSeconds = newInterval
-                totalSeconds = newInterval
-                timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
-            } else {
-                timer.invalidate()
-                // Show complete message
-            }
-        } else {
+        if currentSeconds >= 1 {
+            // Update progress path and label
             currentSeconds -= 1;
             timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
-            shapeLayer.strokeEnd = CGFloat((totalSeconds - currentSeconds) / totalSeconds)
+            let strokeEndValue = ((currentPomodoroInterval.timer - currentSeconds) / currentPomodoroInterval.timer)
+            shapeLayer.strokeEnd = CGFloat(strokeEndValue)
+            
+            // TODO: DETERMINE CORRECT COLOR
+            shapeLayer.strokeColor = NSColor.red.cgColor
+            
+        } else {
+            // Timer complete, get next interval if available
+            if let newInterval = pomodoroInstance.getNextInterval() {
+                currentPomodoroInterval = newInterval
+                currentSeconds = newInterval.timer
+                timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
+                CATransaction.begin()
+                CATransaction.setDisableActions(true)
+                shapeLayer.strokeEnd = CGFloat(0)
+                CATransaction.commit()
+            } else {
+                // Stop timer completely
+                timer.invalidate()
+                
+                // TODO: SHOW DONE, PLAY SOUND, SHOW CORRECT COLOR
+                print("ALL DONE WITH TIMER")
+                shapeLayer.strokeColor = NSColor.green.cgColor
+            }
         }
     }
     
@@ -104,22 +128,14 @@ class TimerViewController: NSViewController {
         
         // Track Layer #1
         let trackLayer = CAShapeLayer()
-        let extraTrackLayer = CAShapeLayer()
         trackLayer.path = circularPath.cgPath
-        extraTrackLayer.path = circularPath.cgPath
         trackLayer.strokeColor = NSColor.lightGray.cgColor
-        extraTrackLayer.strokeColor = NSColor.lightGray.cgColor
         trackLayer.lineWidth = 6
-        extraTrackLayer.lineWidth = 6
         trackLayer.fillColor = NSColor.clear.cgColor
-        extraTrackLayer.fillColor = NSColor.clear.cgColor
-        extraTrackLayer.transform = CATransform3DMakeRotation((CGFloat.pi / 2), 0, 0, 1)
         trackLayer.position = CGPoint(x: 175, y: 200)
-        extraTrackLayer.position = CGPoint(x: 175, y: 200)
         
         // Add track layers to view
         view.layer?.addSublayer(trackLayer)
-        view.layer?.addSublayer(extraTrackLayer)
         
         // Setup progress
         shapeLayer.path = circularPath.cgPath
@@ -131,16 +147,8 @@ class TimerViewController: NSViewController {
         shapeLayer.transform = CATransform3DMakeRotation((CGFloat.pi / 2), 0, 0, 1)
         shapeLayer.strokeStart = 0
         shapeLayer.strokeEnd = 0
+        shapeLayer.fillMode = kCAFillModeForwards
         view.layer?.addSublayer(shapeLayer)
-    }
-    
-    // View has loaded
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        currentSeconds = pomodoroInstance.getCurrentIntervalTime()
-        timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
-        setupInitialTracks()
     }
 }
 
