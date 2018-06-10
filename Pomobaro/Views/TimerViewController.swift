@@ -55,7 +55,7 @@ class TimerViewController: NSViewController {
         // Track Layer #1
         let trackLayer = CAShapeLayer()
         trackLayer.path = circularPath.cgPath
-        trackLayer.strokeColor = NSColor.lightGray.cgColor
+        trackLayer.strokeColor = color(from: "e5e5e5")//NSColor.lightGray.cgColor
         trackLayer.lineWidth = 6
         trackLayer.fillColor = NSColor.clear.cgColor
         trackLayer.position = CGPoint(x: 175, y: 200)
@@ -83,11 +83,11 @@ class TimerViewController: NSViewController {
     // Create the gradient background
     func createGradientBackground() {
         let backgroundView = NSView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height))
-        let colorTop = NSColor(red: 48 / 255, green: 35 / 255, blue: 174 / 255, alpha: 1).cgColor
-        let colorBottom = NSColor(red: 200 / 255, green: 109 / 255, blue: 215 / 255, alpha: 1).cgColor
+        let colorTop = color(from: "1e3148")
+        let colorBottom = color(from: "141E30")
         let gradient  = CAGradientLayer()
-        gradient.colors = [ colorTop, colorBottom]
-        gradient.locations = [ 0.0, 1.0]
+        gradient.colors = [colorBottom, colorTop]
+        gradient.locations = [ 0.1, 1.0]
         gradient.frame = backgroundView.bounds
         backgroundView.wantsLayer = true
         backgroundView.layer?.insertSublayer(gradient, at: 0)
@@ -115,6 +115,8 @@ class TimerViewController: NSViewController {
         }
     }
     
+    
+    // Switch pomodoro indicator colors from break to no break
     func changePomodoroColor(_ isBreak: Bool) {
         for pomo in pomoIndicators {
             var instanceColor = ColorTheme.blue.rawValue
