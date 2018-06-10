@@ -35,6 +35,9 @@ class TimerViewController: NSViewController {
         // Create the background
         createGradientBackground()
         
+        // Style the buttons -- EVENTUALLY REMOVE
+        //styleControlButtons()
+        
         // Get inital values
         currentPomodoroInterval = pomodoroInstance.getCurrentInterval()
         currentSeconds = currentPomodoroInterval.timer
@@ -44,6 +47,29 @@ class TimerViewController: NSViewController {
         // Allow Notifications
         NSUserNotificationCenter.default.delegate = self
     }
+    
+    // Style buttons -- THIS CAN EVENTUALLY BE REMOVED - opting for images
+//    func styleControlButtons() {
+//        // Remove weird background
+//        playPauseButton.appearance = NSAppearance(named: .aqua)
+//        resetIntervalButton.appearance = NSAppearance(named: .aqua)
+//        //resetAllButton.appearance = NSAppearance(named: .aqua)
+//
+//        playPauseButton.bezelStyle = .texturedSquare
+//        playPauseButton.isBordered = false //Important
+//        playPauseButton.wantsLayer = true
+//        playPauseButton.layer?.backgroundColor = NSColor.clear.cgColor
+//        //playPauseButton.layer?.foregrou
+////        resetAllButton.attributedTitle.attribute(.foregroundColor, at: 0, effectiveRange: nil)
+////        resetAllButton.attributedTitle.setValue(NSColor.blue.cgColor, forKey: "foregroundColor")
+//        //self.attributedTitle.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? NSColor
+//        let _ = NSMutableParagraphStyle()
+//
+////        resetAllButton.attributedTitle = NSAttributedString(string: "Title", attributes: [NSAttributedStringKey.foregroundColor : NSColor.blue])
+//        resetAllButton.textColor = NSColor.brown
+//        playPauseButton.textColor = NSColor.white
+//        //playPauseButton.
+//    }
     
     // Setup Initial tracks
     func setupInitialTracks() -> Void {
@@ -55,7 +81,7 @@ class TimerViewController: NSViewController {
         // Track Layer #1
         let trackLayer = CAShapeLayer()
         trackLayer.path = circularPath.cgPath
-        trackLayer.strokeColor = color(from: "e5e5e5")//NSColor.lightGray.cgColor
+        trackLayer.strokeColor = color(from: "e5e5e5")
         trackLayer.lineWidth = 6
         trackLayer.fillColor = NSColor.clear.cgColor
         trackLayer.position = CGPoint(x: 175, y: 200)
@@ -361,3 +387,58 @@ enum ColorTheme: String {
     case blue = "109bde"
     case green = "2ecc71"
 }
+
+
+// ------ THIS CAN EVENTUALLY BE REMOVED - OPTING FOR IMAGES
+//@IBDesignable
+//class Button: NSButton
+//{
+//    @IBInspectable var bgColor: NSColor?
+////    @IBInspectable var textColor: NSColor?
+////
+////    override func awakeFromNib()
+////    {
+////        if let textColor = textColor
+////        {
+////            let style = NSMutableParagraphStyle()
+////            style.alignment = .center
+////
+////            let attributes =
+////                [
+////                    NSAttributedStringKey.foregroundColor: textColor,
+////                    //NSAttributedStringKey.font: font,
+////                    NSAttributedStringKey.paragraphStyle: style
+////                    ] as [NSAttributedStringKey : Any]
+////
+////            let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+////            self.attributedTitle = attributedTitle
+////        }
+////    }
+//
+//    override func draw(_ dirtyRect: NSRect) {
+//        super.draw(dirtyRect)
+//        // Drawing code here.
+//        if let bgColor = bgColor {
+//            self.layer?.cornerRadius = 4
+//            self.layer?.masksToBounds = true
+//            self.layer?.backgroundColor = bgColor.cgColor
+//            bgColor.setFill()
+//            __NSRectFill(dirtyRect)
+//        }
+//    }
+//}
+//
+//extension NSButton {
+//
+//    @IBInspectable open var textColor: NSColor? {
+//        get {
+//            return self.attributedTitle.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? NSColor
+//        }
+//        set {
+//            var attributes = self.attributedTitle.attributes(at: 0, effectiveRange: nil)
+//            attributes[.foregroundColor] = newValue ?? NSColor.black
+//            self.attributedTitle = NSMutableAttributedString(string: self.title,
+//                                                             attributes: attributes)
+//        }
+//    }
+//}
