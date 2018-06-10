@@ -32,6 +32,9 @@ class TimerViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Create the background
+        createGradientBackground()
+        
         // Get inital values
         currentPomodoroInterval = pomodoroInstance.getCurrentInterval()
         currentSeconds = currentPomodoroInterval.timer
@@ -75,6 +78,22 @@ class TimerViewController: NSViewController {
         
         // Create indicators
         createPomodoroIndicators()
+    }
+    
+    // Create the gradient background
+    func createGradientBackground() {
+        let backgroundView = NSView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height))
+        let colorTop = NSColor(red: 48 / 255, green: 35 / 255, blue: 174 / 255, alpha: 1).cgColor
+        let colorBottom = NSColor(red: 200 / 255, green: 109 / 255, blue: 215 / 255, alpha: 1).cgColor
+        let gradient  = CAGradientLayer()
+        gradient.colors = [ colorTop, colorBottom]
+        gradient.locations = [ 0.0, 1.0]
+        gradient.frame = backgroundView.bounds
+        backgroundView.wantsLayer = true
+        backgroundView.layer?.insertSublayer(gradient, at: 0)
+        backgroundView.layer?.zPosition = -1
+        
+        view.addSubview(backgroundView)
     }
     
     // Generate pomodoro indicators
