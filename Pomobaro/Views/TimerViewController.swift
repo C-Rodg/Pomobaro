@@ -36,7 +36,7 @@ class TimerViewController: NSViewController {
         createGradientBackground()
         
         // Style the buttons -- EVENTUALLY REMOVE
-        //styleControlButtons()
+        styleControlButtons()
         
         // Get inital values
         currentPomodoroInterval = pomodoroInstance.getCurrentInterval()
@@ -48,28 +48,17 @@ class TimerViewController: NSViewController {
         NSUserNotificationCenter.default.delegate = self
     }
     
-    // Style buttons -- THIS CAN EVENTUALLY BE REMOVED - opting for images
-//    func styleControlButtons() {
-//        // Remove weird background
-//        playPauseButton.appearance = NSAppearance(named: .aqua)
-//        resetIntervalButton.appearance = NSAppearance(named: .aqua)
-//        //resetAllButton.appearance = NSAppearance(named: .aqua)
-//
-//        playPauseButton.bezelStyle = .texturedSquare
-//        playPauseButton.isBordered = false //Important
-//        playPauseButton.wantsLayer = true
-//        playPauseButton.layer?.backgroundColor = NSColor.clear.cgColor
-//        //playPauseButton.layer?.foregrou
-////        resetAllButton.attributedTitle.attribute(.foregroundColor, at: 0, effectiveRange: nil)
-////        resetAllButton.attributedTitle.setValue(NSColor.blue.cgColor, forKey: "foregroundColor")
-//        //self.attributedTitle.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? NSColor
-//        let _ = NSMutableParagraphStyle()
-//
-////        resetAllButton.attributedTitle = NSAttributedString(string: "Title", attributes: [NSAttributedStringKey.foregroundColor : NSColor.blue])
-//        resetAllButton.textColor = NSColor.brown
-//        playPauseButton.textColor = NSColor.white
-//        //playPauseButton.
-//    }
+    // Remove native button styles
+    func styleControlButtons() {
+        let btns:[NSButton] = [playPauseButton, resetIntervalButton, resetAllButton]
+        for btn in btns {
+            btn.appearance = NSAppearance(named: .aqua)
+            btn.bezelStyle = .texturedSquare
+            btn.isBordered = false
+            btn.wantsLayer = true
+            btn.layer?.backgroundColor = NSColor.clear.cgColor
+        }
+    }
     
     // Setup Initial tracks
     func setupInitialTracks() -> Void {
@@ -198,10 +187,10 @@ class TimerViewController: NSViewController {
     @IBAction func playPauseButtonClicked(_ sender: Any) {
         if isTimerRunning == false {
             runTimer()
-            playPauseButton.title = "Pause"
+            playPauseButton.image = NSImage(imageLiteralResourceName: "pause")
         } else {
             timer.invalidate()
-            playPauseButton.title = "Play"
+            playPauseButton.image = NSImage(imageLiteralResourceName: "play")
             isTimerRunning = false
         }
     }
@@ -211,7 +200,6 @@ class TimerViewController: NSViewController {
     @IBAction func resetButtonClicked(_ sender: Any) {
         playPauseButton.isHidden = false
         resetIntervalButton.isHidden = false
-        resetAllButton.title = "Reset All"
         resetPomodoroIndicators()
         
         timer.invalidate()
@@ -221,7 +209,7 @@ class TimerViewController: NSViewController {
         shapeLayer.strokeColor = getTrackColor()
         timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
         isTimerRunning = false
-        playPauseButton.title = "Play"
+        playPauseButton.image = NSImage(imageLiteralResourceName: "play")
     }
     
     // EVENT - Reset Interval clicked
@@ -233,7 +221,7 @@ class TimerViewController: NSViewController {
         shapeLayer.strokeColor = getTrackColor()
         timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
         isTimerRunning = false
-        playPauseButton.title = "Play"
+        playPauseButton.image = NSImage(imageLiteralResourceName: "play")
     }
     
     // Run Timer loop
@@ -294,7 +282,6 @@ class TimerViewController: NSViewController {
                 timer.invalidate()
                 playPauseButton.isHidden = true
                 resetIntervalButton.isHidden = true
-                resetAllButton.title = "Restart"
                 isTimerRunning = false
                 
                 showNotification(withTitle: "Timer Complete!", withBody: "Long break is over. Back to work.")
