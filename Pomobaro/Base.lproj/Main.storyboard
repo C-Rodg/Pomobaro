@@ -730,12 +730,24 @@
                                     <action selector="resetIntervalButtonClicked:" target="XfG-lQ-9wD" id="cxc-9G-Hwj"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aJ7-Lb-PwX" userLabel="Settings Button">
+                                <rect key="frame" x="1" y="290" width="36" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="settings" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="gqL-qO-Vnz">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="settingsButtonClicked:" target="XfG-lQ-9wD" id="rqL-ud-X9K"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
                         <outlet property="playPauseButton" destination="GX7-HW-U2k" id="OLf-0g-yPe"/>
                         <outlet property="resetAllButton" destination="SwS-kf-1ha" id="ZnA-5f-zqU"/>
                         <outlet property="resetIntervalButton" destination="1LC-RH-3Pp" id="usT-YX-hkJ"/>
+                        <outlet property="settingsButton" destination="aJ7-Lb-PwX" id="87U-oz-RGn"/>
                         <outlet property="timerLabel" destination="5ge-LV-bV1" id="9kc-7v-UlB"/>
                     </connections>
                 </viewController>
@@ -748,5 +760,6 @@
         <image name="play" width="64" height="64"/>
         <image name="reset_all" width="64" height="64"/>
         <image name="reset_one" width="64" height="64"/>
+        <image name="settings" width="48" height="48"/>
     </resources>
 </document>

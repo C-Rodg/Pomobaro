@@ -27,6 +27,7 @@ class TimerViewController: NSViewController {
     @IBOutlet weak var playPauseButton: NSButton!
     @IBOutlet weak var resetIntervalButton: NSButton!
     @IBOutlet weak var resetAllButton: NSButton!
+    @IBOutlet weak var settingsButton: NSButton!
     
     // Initial Setup
     override func viewDidLoad() {
@@ -50,7 +51,7 @@ class TimerViewController: NSViewController {
     
     // Remove native button styles
     func styleControlButtons() {
-        let btns:[NSButton] = [playPauseButton, resetIntervalButton, resetAllButton]
+        let btns:[NSButton] = [playPauseButton, resetIntervalButton, resetAllButton, settingsButton]
         for btn in btns {
             btn.appearance = NSAppearance(named: .aqua)
             btn.bezelStyle = .texturedSquare
@@ -195,9 +196,14 @@ class TimerViewController: NSViewController {
         }
     }
     
+    // EVENT - Settings button clicked
+    @IBAction func settingsButtonClicked(_ sender: NSButton) {
+        // TODO: NAVIGATE TO SETTINGS VIEW
+    }
+    
     
     // EVENT - Reset All clicked
-    @IBAction func resetButtonClicked(_ sender: Any) {
+    @IBAction func resetButtonClicked(_ sender: NSButton) {
         playPauseButton.isHidden = false
         resetIntervalButton.isHidden = false
         resetPomodoroIndicators()
