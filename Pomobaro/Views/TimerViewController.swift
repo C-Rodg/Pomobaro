@@ -73,7 +73,7 @@ class TimerViewController: NSViewController {
         trackLayer.strokeColor = color(from: "e5e5e5")
         trackLayer.lineWidth = 6
         trackLayer.fillColor = NSColor.clear.cgColor
-        trackLayer.position = CGPoint(x: 175, y: 200)
+        trackLayer.position = CGPoint(x: 175, y: 165)
         
         // Add track layers to view
         view.layer?.addSublayer(trackLayer)
@@ -84,7 +84,7 @@ class TimerViewController: NSViewController {
         shapeLayer.lineWidth = 6
         shapeLayer.fillColor = NSColor.clear.cgColor
         //shapeLayer.lineCap = kCALineCapRound
-        shapeLayer.position = CGPoint(x: 175, y: 200)
+        shapeLayer.position = CGPoint(x: 175, y: 165)
         shapeLayer.transform = CATransform3DMakeRotation((CGFloat.pi / 2), 0, 0, 1)
         shapeLayer.strokeStart = 0
         shapeLayer.strokeEnd = 0
@@ -124,7 +124,7 @@ class TimerViewController: NSViewController {
             trackLayer.lineWidth = 2
             trackLayer.fillColor = NSColor.clear.cgColor
             trackLayer.strokeColor = color(from: ColorTheme.blue.rawValue, withAlpha: 0.4)
-            trackLayer.position = CGPoint(x: x, y: 135)
+            trackLayer.position = CGPoint(x: x, y: 110)
             view.layer?.addSublayer(trackLayer)
             pomoIndicators.append(trackLayer)
         }
@@ -374,58 +374,3 @@ enum ColorTheme: String {
     case blue = "109bde"
     case green = "2ecc71"
 }
-
-
-// ------ THIS CAN EVENTUALLY BE REMOVED - OPTING FOR IMAGES
-//@IBDesignable
-//class Button: NSButton
-//{
-//    @IBInspectable var bgColor: NSColor?
-////    @IBInspectable var textColor: NSColor?
-////
-////    override func awakeFromNib()
-////    {
-////        if let textColor = textColor
-////        {
-////            let style = NSMutableParagraphStyle()
-////            style.alignment = .center
-////
-////            let attributes =
-////                [
-////                    NSAttributedStringKey.foregroundColor: textColor,
-////                    //NSAttributedStringKey.font: font,
-////                    NSAttributedStringKey.paragraphStyle: style
-////                    ] as [NSAttributedStringKey : Any]
-////
-////            let attributedTitle = NSAttributedString(string: title, attributes: attributes)
-////            self.attributedTitle = attributedTitle
-////        }
-////    }
-//
-//    override func draw(_ dirtyRect: NSRect) {
-//        super.draw(dirtyRect)
-//        // Drawing code here.
-//        if let bgColor = bgColor {
-//            self.layer?.cornerRadius = 4
-//            self.layer?.masksToBounds = true
-//            self.layer?.backgroundColor = bgColor.cgColor
-//            bgColor.setFill()
-//            __NSRectFill(dirtyRect)
-//        }
-//    }
-//}
-//
-//extension NSButton {
-//
-//    @IBInspectable open var textColor: NSColor? {
-//        get {
-//            return self.attributedTitle.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? NSColor
-//        }
-//        set {
-//            var attributes = self.attributedTitle.attributes(at: 0, effectiveRange: nil)
-//            attributes[.foregroundColor] = newValue ?? NSColor.black
-//            self.attributedTitle = NSMutableAttributedString(string: self.title,
-//                                                             attributes: attributes)
-//        }
-//    }
-//}
