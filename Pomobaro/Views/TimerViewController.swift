@@ -20,14 +20,21 @@ class TimerViewController: NSViewController {
     
     // Animation
     let shapeLayer = CAShapeLayer()
+    let trackLayer = CAShapeLayer()
     var pomoIndicators: [CAShapeLayer] = []
     
-    // Outlets
+    // Outlets - Main View
     @IBOutlet weak var timerLabel: NSTextField!
     @IBOutlet weak var playPauseButton: NSButton!
     @IBOutlet weak var resetIntervalButton: NSButton!
     @IBOutlet weak var resetAllButton: NSButton!
     @IBOutlet weak var settingsButton: NSButton!
+    
+    
+    // Outlets - Settings View
+    @IBOutlet weak var settingsView: NSView!
+    @IBOutlet weak var backButton: NSButton!
+    
     
     // Initial Setup
     override func viewDidLoad() {
@@ -36,7 +43,7 @@ class TimerViewController: NSViewController {
         // Create the background
         createGradientBackground()
         
-        // Style the buttons -- EVENTUALLY REMOVE
+        // Style the buttons
         styleControlButtons()
         
         // Get inital values
@@ -47,11 +54,46 @@ class TimerViewController: NSViewController {
         
         // Allow Notifications
         NSUserNotificationCenter.default.delegate = self
+        
+        // Hide settings controls
+        settingsView.isHidden = true
+        backButton.isHidden = true
+    }
+    
+    // Toggle hiding main view buttons, animation layers, and timer with settings controls
+    func toggleSettingsView() {
+        let mainViewButtons: [NSButton] = [playPauseButton, resetIntervalButton, resetAllButton, settingsButton]
+        var setMainViewHidden = false
+        if settingsView.isHidden {
+            setMainViewHidden = true
+        }
+        
+        // Show/Hide main view buttons
+        for btn in mainViewButtons {
+            btn.isHidden = setMainViewHidden
+        }
+        
+        // Show/Hide pomodoro indicators
+        for indicator in pomoIndicators {
+            indicator.isHidden = setMainViewHidden
+        }
+        
+        // Show/Hide animation layers
+        trackLayer.isHidden = setMainViewHidden
+        shapeLayer.isHidden = setMainViewHidden
+        
+        // Show/Hide Timer
+        timerLabel.isHidden = setMainViewHidden
+        
+        // Show/Hide Back Button
+        backButton.isHidden = !setMainViewHidden
+        
+        settingsView.isHidden = !setMainViewHidden
     }
     
     // Remove native button styles
     func styleControlButtons() {
-        let btns:[NSButton] = [playPauseButton, resetIntervalButton, resetAllButton, settingsButton]
+        let btns:[NSButton] = [playPauseButton, resetIntervalButton, resetAllButton, settingsButton, backButton]
         for btn in btns {
             btn.appearance = NSAppearance(named: .aqua)
             btn.bezelStyle = .texturedSquare
@@ -69,7 +111,6 @@ class TimerViewController: NSViewController {
         circularPath.close()
         
         // Track Layer #1
-        let trackLayer = CAShapeLayer()
         trackLayer.path = circularPath.cgPath
         trackLayer.strokeColor = color(from: "e5e5e5")
         trackLayer.lineWidth = 6
@@ -196,9 +237,9 @@ class TimerViewController: NSViewController {
         }
     }
     
-    // EVENT - Settings button clicked
-    @IBAction func settingsButtonClicked(_ sender: NSButton) {
-        // TODO: NAVIGATE TO SETTINGS VIEW
+    // EVENT - Switch from Main View <-> Settings View
+    @IBAction func handleRouteChange(_ sender: NSButton) {
+        toggleSettingsView()
     }
     
     
