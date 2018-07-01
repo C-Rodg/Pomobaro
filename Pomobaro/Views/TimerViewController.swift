@@ -34,6 +34,9 @@ class TimerViewController: NSViewController {
     // Outlets - Settings View
     @IBOutlet weak var settingsView: NSView!
     @IBOutlet weak var backButton: NSButton!
+    @IBOutlet weak var workTimeInput: NSTextField!
+    @IBOutlet weak var shortBreakInput: NSTextField!
+    @IBOutlet weak var longBreakInput: NSTextField!
     
     
     // Initial Setup
@@ -58,6 +61,9 @@ class TimerViewController: NSViewController {
         // Hide settings controls
         settingsView.isHidden = true
         backButton.isHidden = true
+        
+//        longBreakInput.wantsLayer = true
+//        longBreakInput.layer?.cornerRadius = 8.0
     }
     
     // Toggle hiding main view buttons, animation layers, and timer with settings controls
@@ -420,4 +426,15 @@ enum ColorTheme: String {
     case red = "d46164"
     case blue = "109bde"
     case green = "2ecc71"
+}
+
+// Subclass the NSTextField to customize border
+class CustomTextInput: NSTextField {
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
+        let bounds: NSRect = self.bounds
+        let border: NSBezierPath = NSBezierPath(roundedRect: NSInsetRect(bounds, 0.5, 0.5), xRadius: 3, yRadius: 3)
+        NSColor.white.set()
+        border.stroke()
+    }
 }

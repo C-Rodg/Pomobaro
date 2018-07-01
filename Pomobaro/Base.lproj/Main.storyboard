@@ -692,7 +692,7 @@
                                 <rect key="frame" x="1" y="61" width="347" height="213"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
-                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="psr-MA-vg2" userLabel="WorkTimeInput">
+                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="psr-MA-vg2" userLabel="WorkTimeInput" customClass="CustomTextInput" customModule="Pomobaro" customModuleProvider="target">
                                         <rect key="frame" x="250" y="140" width="50" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" bezelStyle="round" id="u39-mK-Hzb">
@@ -702,7 +702,7 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rbd-79-0mf" userLabel="ShortBreakInput">
+                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rbd-79-0mf" userLabel="ShortBreakInput" customClass="CustomTextInput" customModule="Pomobaro" customModuleProvider="target">
                                         <rect key="frame" x="250" y="90" width="50" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" bezelStyle="round" id="sIg-ZI-4bY">
@@ -712,7 +712,7 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="19G-Yx-SxD" userLabel="LongBreakInput">
+                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="19G-Yx-SxD" userLabel="LongBreakInput" customClass="CustomTextInput" customModule="Pomobaro" customModuleProvider="target">
                                         <rect key="frame" x="250" y="40" width="50" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" bezelStyle="round" id="MRd-Nf-kTX">
@@ -727,7 +727,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Work Time:" drawsBackground="YES" id="6Im-rI-mkM">
                                             <font key="font" metaFont="system" size="16"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="textColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </textFieldCell>
                                     </textField>
@@ -736,7 +736,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Long Break Time:" drawsBackground="YES" id="4uZ-bd-Bur">
                                             <font key="font" metaFont="system" size="16"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="textColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </textFieldCell>
                                     </textField>
@@ -745,7 +745,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Short Break Time:" drawsBackground="YES" id="I27-T6-WAO">
                                             <font key="font" metaFont="system" size="16"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="textColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </textFieldCell>
                                     </textField>
@@ -824,7 +824,9 @@
                         <outlet property="resetIntervalButton" destination="1LC-RH-3Pp" id="usT-YX-hkJ"/>
                         <outlet property="settingsButton" destination="aJ7-Lb-PwX" id="87U-oz-RGn"/>
                         <outlet property="settingsView" destination="5Hx-4z-UXV" id="FB7-ru-e9w"/>
+                        <outlet property="shortBreakInput" destination="Rbd-79-0mf" id="r6q-Tn-UI9"/>
                         <outlet property="timerLabel" destination="5ge-LV-bV1" id="9kc-7v-UlB"/>
+                        <outlet property="workTimeInput" destination="psr-MA-vg2" id="vXo-aA-GqP"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
