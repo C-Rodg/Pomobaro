@@ -24,6 +24,7 @@ class TimerViewController: NSViewController {
     var pomoIndicators: [CAShapeLayer] = []
     
     // Outlets - Main View
+    @IBOutlet weak var timerView: NSView!
     @IBOutlet weak var timerLabel: NSTextField!
     @IBOutlet weak var playPauseButton: NSButton!
     @IBOutlet weak var resetIntervalButton: NSButton!
@@ -37,7 +38,7 @@ class TimerViewController: NSViewController {
     @IBOutlet weak var workTimeInput: NSTextField!
     @IBOutlet weak var shortBreakInput: NSTextField!
     @IBOutlet weak var longBreakInput: NSTextField!
-    
+    @IBOutlet weak var settingsErrorMessage: NSTextField!
     
     // Initial Setup
     override func viewDidLoad() {
@@ -60,41 +61,51 @@ class TimerViewController: NSViewController {
         
         // Hide settings controls
         settingsView.isHidden = true
-        backButton.isHidden = true
     }
     
     // Toggle hiding main view buttons, animation layers, and timer with settings controls
     func toggleSettingsView() {
-        let mainViewButtons: [NSButton] = [playPauseButton, resetIntervalButton, resetAllButton, settingsButton]
-        var setMainViewHidden = false
+        
         if settingsView.isHidden {
-            setMainViewHidden = true
+            // Going to settings view
+            timerView.isHidden = true
+            settingsView.isHidden = false
+            settingsErrorMessage.isHidden = true
+            workTimeInput.doubleValue = pomodoroInstance.timeWork / 60
+            shortBreakInput.doubleValue = pomodoroInstance.timeShortBreak / 60
+            longBreakInput.doubleValue = pomodoroInstance.timeLongBreak / 60
+        } else {
+            // Returning home
+            if validateInputIntervals() {
+                timerView.isHidden = false
+                settingsView.isHidden = true
+            }
         }
-        
-        // Show/Hide main view buttons
-        for btn in mainViewButtons {
-            btn.isHidden = setMainViewHidden
-        }
-        
-        // Show/Hide pomodoro indicators
-        for indicator in pomoIndicators {
-            indicator.isHidden = setMainViewHidden
-        }
-        
-        // Show/Hide animation layers
-        trackLayer.isHidden = setMainViewHidden
-        shapeLayer.isHidden = setMainViewHidden
-        
-        // Show/Hide Timer
-        timerLabel.isHidden = setMainViewHidden
-        
-        // Show/Hide Back Button
-        backButton.isHidden = !setMainViewHidden
-        
-        settingsView.isHidden = !setMainViewHidden
     }
     
-    // Remove native button styles
+    // Validate values of input fields
+    func validateInputIntervals() -> Bool {
+        let workTime = workTimeInput.doubleValue
+        let shortBreak = shortBreakInput.doubleValue
+        let longBreak = longBreakInput.doubleValue
+        var errorMsg = ""
+        if workTime < 1.0 || longBreak < 1.0 || shortBreak < 1.0 {
+            errorMsg = "All intervals must be at least 1 minute."
+        } else if workTime >= 100.0 || longBreak >= 100.0 || shortBreak >= 100.0 {
+            errorMsg = "Intervals over a 100 minutes are not supported."
+        }
+        
+        // Show error
+        if errorMsg != "" {
+            NSSound(named: NSSound.Name("Funk"))?.play()
+            settingsErrorMessage.stringValue = errorMsg
+            settingsErrorMessage.isHidden = false
+            return false
+        }
+        return true
+    }
+    
+    // STYLE - Remove native button styles
     func styleControlButtons() {
         let btns:[NSButton] = [playPauseButton, resetIntervalButton, resetAllButton, settingsButton, backButton]
         for btn in btns {
@@ -106,7 +117,7 @@ class TimerViewController: NSViewController {
         }
     }
     
-    // Setup Initial tracks
+    // ANIMATION - Setup Initial tracks
     func setupInitialTracks() -> Void {
         let circularPath = NSBezierPath()
         circularPath.appendArc(withCenter: .zero, radius: CGFloat(125), startAngle: CGFloat(0), endAngle: CGFloat(2 * Double.pi), clockwise: true)
@@ -121,7 +132,8 @@ class TimerViewController: NSViewController {
         trackLayer.position = CGPoint(x: 175, y: 165)
         
         // Add track layers to view
-        view.layer?.addSublayer(trackLayer)
+        timerView.wantsLayer = true
+        timerView.layer?.addSublayer(trackLayer)
         
         // Setup progress
         shapeLayer.path = circularPath.cgPath
@@ -134,13 +146,13 @@ class TimerViewController: NSViewController {
         shapeLayer.strokeStart = 0
         shapeLayer.strokeEnd = 0
         shapeLayer.fillMode = kCAFillModeForwards
-        view.layer?.addSublayer(shapeLayer)
+        timerView.layer?.addSublayer(shapeLayer)
         
         // Create indicators
         createPomodoroIndicators()
     }
     
-    // Create the gradient background
+    // STYLE - Create the gradient background
     func createGradientBackground() {
         let backgroundView = NSView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height))
         let colorTop = color(from: "1e3148")
@@ -156,7 +168,7 @@ class TimerViewController: NSViewController {
         view.addSubview(backgroundView)
     }
     
-    // Generate pomodoro indicators
+    // STYLE - Generate pomodoro indicators
     func createPomodoroIndicators() {
         let xPaths: [Int] = [144, 164, 184, 204]
         for x in xPaths {
@@ -170,13 +182,13 @@ class TimerViewController: NSViewController {
             trackLayer.fillColor = NSColor.clear.cgColor
             trackLayer.strokeColor = color(from: ColorTheme.blue.rawValue, withAlpha: 0.4)
             trackLayer.position = CGPoint(x: x, y: 110)
-            view.layer?.addSublayer(trackLayer)
+            timerView.layer?.addSublayer(trackLayer)
             pomoIndicators.append(trackLayer)
         }
     }
     
     
-    // Switch pomodoro indicator colors from break to no break
+    // ANIMATION - Switch pomodoro indicator colors from break to no break
     func changePomodoroColor(_ isBreak: Bool) {
         for pomo in pomoIndicators {
             var instanceColor = ColorTheme.blue.rawValue
@@ -192,7 +204,7 @@ class TimerViewController: NSViewController {
         }
     }
     
-    // Reset Pomodor indicators
+    // FUNCTIONALITY - Reset Pomodor indicators
     func resetPomodoroIndicators() {
         for pomo in pomoIndicators {
             pomo.removeAllAnimations()
@@ -201,12 +213,12 @@ class TimerViewController: NSViewController {
         }
     }
     
-    // Add pulsing and fill effect
+    // ANIMATION - Add pulsing and fill effect
     func completeIndividualPomoIndicator(count: Int) {
         animatePomoIndicator(for: count-1, with: ColorTheme.blue.rawValue)
     }
     
-    // Helper animation for pomo indicators
+    // ANIMATION - Helper animation for pomo indicators
     func animatePomoIndicator(for i: Int, with stringColor: String) {
         let indicator = pomoIndicators[i]
         indicator.fillColor = color(from: stringColor)
@@ -221,7 +233,7 @@ class TimerViewController: NSViewController {
         indicator.add(animationScale, forKey: "pulsing")
     }
     
-    // All pomodoros are completed
+    // ANIMATION - All pomodoros are completed
     func completeAllPomoIndicitator() {
         for index in 0..<pomoIndicators.count {
             animatePomoIndicator(for: index, with: "2ecc71")
@@ -274,14 +286,14 @@ class TimerViewController: NSViewController {
         playPauseButton.image = NSImage(imageLiteralResourceName: "play")
     }
     
-    // Run Timer loop
+    // FUNCTIONALITY - Run Timer loop
     func runTimer() -> Void {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(TimerViewController.updateTimer)), userInfo: nil, repeats: true)
         
         isTimerRunning = true
     }
     
-    // Update the timer label view
+    // FUNCTIONALITY - Update the timer label view
     @objc func updateTimer() -> Void {
         if currentSeconds >= 1 {
             if currentSeconds == currentPomodoroInterval.timer {
@@ -341,14 +353,14 @@ class TimerViewController: NSViewController {
         }
     }
     
-    // Format time into display string
+    // FUNCTIONALITY - Format time into display string
     func getTimeString(time: TimeInterval) -> String {
-        let minutes = Int(time) / 60 % 60
+        let minutes = Int(time) / 60
         let seconds = Int(time) % 60
         return String(format: "%02i:%02i", minutes, seconds);
     }
     
-    // Get proper track color based off of application state
+    // STYLE - Get proper track color based off of application state
     func getTrackColor() -> CGColor {
         if currentPomodoroInterval.isBreak {
             return color(from: ColorTheme.red.rawValue)
@@ -371,6 +383,7 @@ class TimerViewController: NSViewController {
     }
 }
 
+// Notification Delegate
 extension TimerViewController: NSUserNotificationCenterDelegate {
     func showNotification(withTitle title: String, withBody body: String) -> Void {
         let notification = NSUserNotification()
@@ -415,23 +428,5 @@ extension TimerViewController {
             fatalError("Cannot find TimerViewController - check Main.storyboard")
         }
         return vc
-    }
-}
-
-// Color theme
-enum ColorTheme: String {
-    case red = "d46164"
-    case blue = "109bde"
-    case green = "2ecc71"
-}
-
-// Subclass the NSTextField to customize border
-class CustomTextInput: NSTextField {
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-        let bounds: NSRect = self.bounds
-        let border: NSBezierPath = NSBezierPath(roundedRect: NSInsetRect(bounds, 0.5, 0.5), xRadius: 3, yRadius: 3)
-        NSColor.white.set()
-        border.stroke()
     }
 }

@@ -16,9 +16,9 @@ class PomodoroTimer {
     var pomodoroCount: Int = 0
     
     // Timers
-    var timeWork: Double = 10
-    var timeShortBreak: Double = 5
-    var timeLongBreak: Double = 8
+    var timeWork: Double = 1500
+    var timeShortBreak: Double = 300
+    var timeLongBreak: Double = 900
     
     var timeArray: [PomodoroTimeInterval] = []
     
