@@ -61,9 +61,6 @@ class TimerViewController: NSViewController {
         // Hide settings controls
         settingsView.isHidden = true
         backButton.isHidden = true
-        
-//        longBreakInput.wantsLayer = true
-//        longBreakInput.layer?.cornerRadius = 8.0
     }
     
     // Toggle hiding main view buttons, animation layers, and timer with settings controls

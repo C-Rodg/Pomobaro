@@ -10,26 +10,35 @@ import Cocoa
 
 // Timer class
 class PomodoroTimer {
+    
+    // Indexes
     var currentIndex: Int = 0
     var pomodoroCount: Int = 0
-    let timeArray: [PomodoroTimeInterval] = [
-//        PomodoroTimeInterval(timer: 1500, isBreak: false),
-//        PomodoroTimeInterval(timer: 300, isBreak: true),
-//        PomodoroTimeInterval(timer: 1500, isBreak: false),
-//        PomodoroTimeInterval(timer: 300, isBreak: true),
-//        PomodoroTimeInterval(timer: 1500, isBreak: false),
-//        PomodoroTimeInterval(timer: 300, isBreak: true),
-//        PomodoroTimeInterval(timer: 1500, isBreak: false),
-//        PomodoroTimeInterval(timer: 900, isBreak: true, isLongBreak: true)]
-        PomodoroTimeInterval(timer: 10, isBreak: false),
-        PomodoroTimeInterval(timer: 5, isBreak: true),
-        PomodoroTimeInterval(timer: 10, isBreak: false),
-        PomodoroTimeInterval(timer: 5, isBreak: true),
-        PomodoroTimeInterval(timer: 10, isBreak: false),
-        PomodoroTimeInterval(timer: 5, isBreak: true),
-        PomodoroTimeInterval(timer: 10, isBreak: false),
-        PomodoroTimeInterval(timer: 8, isBreak: true, isLongBreak: true)]
     
+    // Timers
+    var timeWork: Double = 10
+    var timeShortBreak: Double = 5
+    var timeLongBreak: Double = 8
+    
+    var timeArray: [PomodoroTimeInterval] = []
+    
+    init() {
+        generateTimeArray()
+    }
+    
+    // Generate time array based off of current set intervals
+    func generateTimeArray() {
+        timeArray = []
+        for i in 0...7 {
+            if i == 7 {
+                timeArray.append(PomodoroTimeInterval(timer: timeLongBreak, isBreak: true, isLongBreak: true))
+            } else if i % 2 == 0 {
+                timeArray.append(PomodoroTimeInterval(timer: timeWork, isBreak: false))
+            } else {
+                timeArray.append(PomodoroTimeInterval(timer: timeShortBreak, isBreak: true))
+            }
+        }
+    }
     
     // Reset entire timer
     func resetTimer() -> PomodoroTimeInterval {
