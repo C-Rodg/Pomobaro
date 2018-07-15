@@ -23,7 +23,20 @@ class PomodoroTimer {
     var timeArray: [PomodoroTimeInterval] = []
     
     init() {
+        getIntervalsFromDatabase()
         generateTimeArray()
+    }
+    
+    // Get Intervals from saved location
+    func getIntervalsFromDatabase() {
+        let defaults = UserDefaults.standard
+        let work = defaults.double(forKey: "pomoWork")
+        let short = defaults.double(forKey: "pomoShort")
+        let long = defaults.double(forKey: "pomoLong")
+        
+        timeWork = work < 1.0 ? 1500 : work
+        timeShortBreak = short < 1.0 ? 300 : short
+        timeLongBreak = long < 1.0 ? 900 : long
     }
     
     // Generate time array based off of current set intervals

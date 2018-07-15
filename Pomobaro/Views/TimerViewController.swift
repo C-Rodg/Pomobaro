@@ -11,12 +11,12 @@ import Cocoa
 class TimerViewController: NSViewController {
 
     // Timer Settings and flags
-    var currentSeconds: Double = 10//1500
+    var currentSeconds: Double = 1500
     var timer = Timer()
     var isTimerRunning = false
     var resumeTapped = false
     let pomodoroInstance: PomodoroTimer = PomodoroTimer()
-    var currentPomodoroInterval: PomodoroTimeInterval = PomodoroTimeInterval(timer: 15, isBreak: false)
+    var currentPomodoroInterval: PomodoroTimeInterval = PomodoroTimeInterval(timer: 1500, isBreak: false)
     
     // Animation
     let shapeLayer = CAShapeLayer()
@@ -39,6 +39,7 @@ class TimerViewController: NSViewController {
     @IBOutlet weak var shortBreakInput: NSTextField!
     @IBOutlet weak var longBreakInput: NSTextField!
     @IBOutlet weak var settingsErrorMessage: NSTextField!
+    @IBOutlet weak var restoreDefaultsButton: NSButton!
     
     // Initial Setup
     override func viewDidLoad() {
@@ -61,9 +62,10 @@ class TimerViewController: NSViewController {
         
         // Hide settings controls
         settingsView.isHidden = true
+        
     }
     
-    // Toggle hiding main view buttons, animation layers, and timer with settings controls
+    // FUNCTIONALITY - Switch between main and settings views
     func toggleSettingsView() {
         
         if settingsView.isHidden {
@@ -77,13 +79,63 @@ class TimerViewController: NSViewController {
         } else {
             // Returning home
             if validateInputIntervals() {
+                handleInputIntervalChanges()
                 timerView.isHidden = false
                 settingsView.isHidden = true
             }
         }
     }
     
-    // Validate values of input fields
+    // FUNCTIONALITY - Determine input values changed and current timer status
+    func handleInputIntervalChanges() {
+        let defaults = UserDefaults.standard
+        let workInputDouble = workTimeInput.doubleValue * 60
+        let shortInputDouble = shortBreakInput.doubleValue * 60
+        let longInputDouble = longBreakInput.doubleValue * 60
+        
+        if workInputDouble == pomodoroInstance.timeWork && shortInputDouble == pomodoroInstance.timeShortBreak && longInputDouble == pomodoroInstance.timeLongBreak  {
+            return
+        }
+        
+        var currentIntervalHasChanged = false
+        
+        if workInputDouble != pomodoroInstance.timeWork {
+            // Work time has changed
+            pomodoroInstance.timeWork = workInputDouble
+            defaults.set(workInputDouble, forKey: "pomoWork")
+            if !currentPomodoroInterval.isBreak {
+                currentIntervalHasChanged = true
+            }
+        }
+        
+        if shortInputDouble != pomodoroInstance.timeShortBreak {
+            // Short break has changed
+            pomodoroInstance.timeShortBreak = shortInputDouble
+            defaults.set(shortInputDouble, forKey: "pomoShort")
+            if currentPomodoroInterval.isBreak && !currentPomodoroInterval.isLongBreak {
+                currentIntervalHasChanged = true
+            }
+        }
+        
+        
+        if longInputDouble != pomodoroInstance.timeLongBreak {
+            // Long break has changed
+            pomodoroInstance.timeLongBreak = longInputDouble
+            defaults.set(longInputDouble, forKey: "pomoLong")
+            if currentPomodoroInterval.isBreak && currentPomodoroInterval.isLongBreak {
+                currentIntervalHasChanged = true
+            }
+        }
+        
+        // Recreate instance timer array
+        pomodoroInstance.generateTimeArray()
+        
+        if currentIntervalHasChanged {
+            resetIntervalButtonClicked(nil)
+        }
+    }
+    
+    // FUNCTIONALITY - Validate values of input fields
     func validateInputIntervals() -> Bool {
         let workTime = workTimeInput.doubleValue
         let shortBreak = shortBreakInput.doubleValue
@@ -92,7 +144,7 @@ class TimerViewController: NSViewController {
         if workTime < 1.0 || longBreak < 1.0 || shortBreak < 1.0 {
             errorMsg = "All intervals must be at least 1 minute."
         } else if workTime >= 100.0 || longBreak >= 100.0 || shortBreak >= 100.0 {
-            errorMsg = "Intervals over a 100 minutes are not supported."
+            errorMsg = "Intervals must be less than 100 minutes."
         }
         
         // Show error
@@ -115,6 +167,11 @@ class TimerViewController: NSViewController {
             btn.wantsLayer = true
             btn.layer?.backgroundColor = NSColor.clear.cgColor
         }
+        
+        // Restore default button
+        restoreDefaultsButton.appearance = NSAppearance(named: .aqua)
+        restoreDefaultsButton.bezelStyle = .texturedSquare
+        restoreDefaultsButton.isBordered = true
     }
     
     // ANIMATION - Setup Initial tracks
@@ -275,7 +332,7 @@ class TimerViewController: NSViewController {
     }
     
     // EVENT - Reset Interval clicked
-    @IBAction func resetIntervalButtonClicked(_ sender: NSButton) {
+    @IBAction func resetIntervalButtonClicked(_ sender: NSButton?) {
         timer.invalidate()
         currentPomodoroInterval  = pomodoroInstance.getCurrentInterval()
         currentSeconds = currentPomodoroInterval.timer
@@ -284,6 +341,13 @@ class TimerViewController: NSViewController {
         timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
         isTimerRunning = false
         playPauseButton.image = NSImage(imageLiteralResourceName: "play")
+    }
+    
+    // EVENT - Restore Default clicked
+    @IBAction func restoreDefaults(_ sender: NSButton) {
+        workTimeInput.doubleValue = 25
+        shortBreakInput.doubleValue = 5
+        longBreakInput.doubleValue = 15
     }
     
     // FUNCTIONALITY - Run Timer loop

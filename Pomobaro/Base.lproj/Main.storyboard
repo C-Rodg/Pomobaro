@@ -752,6 +752,15 @@
                                 <rect key="frame" x="1" y="2" width="347" height="323"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hev-uS-Mmc">
+                                        <rect key="frame" x="38" y="252" width="291" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="Jqu-X2-ZhA">
+                                            <font key="font" metaFont="systemLight" size="11"/>
+                                            <color key="textColor" red="0.89803921568627454" green="0.18823529411764706" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vJ5-c7-Mfa" userLabel="Back Button">
                                         <rect key="frame" x="0.0" y="285" width="36" height="36"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -820,15 +829,17 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hev-uS-Mmc">
-                                        <rect key="frame" x="38" y="252" width="291" height="17"/>
+                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iAY-Ym-3SP">
+                                        <rect key="frame" x="40" y="53" width="125" height="23"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="Jqu-X2-ZhA">
-                                            <font key="font" metaFont="systemLight" size="11"/>
-                                            <color key="textColor" red="0.89803921568627454" green="0.18823529411764706" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
+                                        <buttonCell key="cell" type="bevel" title="Restore Defaults" bezelStyle="rounded" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="eo7-6b-sXE">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system" size="11"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="restoreDefaults:" target="XfG-lQ-9wD" id="czf-i5-Gbc"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </customView>
                         </subviews>
@@ -839,6 +850,7 @@
                         <outlet property="playPauseButton" destination="GX7-HW-U2k" id="OLf-0g-yPe"/>
                         <outlet property="resetAllButton" destination="SwS-kf-1ha" id="ZnA-5f-zqU"/>
                         <outlet property="resetIntervalButton" destination="1LC-RH-3Pp" id="usT-YX-hkJ"/>
+                        <outlet property="restoreDefaultsButton" destination="iAY-Ym-3SP" id="QMG-Xj-1UT"/>
                         <outlet property="settingsButton" destination="aJ7-Lb-PwX" id="87U-oz-RGn"/>
                         <outlet property="settingsErrorMessage" destination="hev-uS-Mmc" id="DAf-Hd-DMj"/>
                         <outlet property="settingsView" destination="5Hx-4z-UXV" id="FB7-ru-e9w"/>
