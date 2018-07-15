@@ -31,7 +31,6 @@ class TimerViewController: NSViewController {
     @IBOutlet weak var resetAllButton: NSButton!
     @IBOutlet weak var settingsButton: NSButton!
     
-    
     // Outlets - Settings View
     @IBOutlet weak var settingsView: NSView!
     @IBOutlet weak var backButton: NSButton!
@@ -41,7 +40,7 @@ class TimerViewController: NSViewController {
     @IBOutlet weak var settingsErrorMessage: NSTextField!
     @IBOutlet weak var restoreDefaultsButton: NSButton!
     
-    // Initial Setup
+    // LIFECYCLE EVENT - Initial Setup
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,7 +61,25 @@ class TimerViewController: NSViewController {
         
         // Hide settings controls
         settingsView.isHidden = true
-        
+    }
+   
+    // FUNCTIONALITY - Change status bar based off of current status
+    func alterStatusBarTo(_ status: String) {
+        guard let appDelegate = NSApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        let imageName = "taskbar_" + status
+        if let currentStatusImage = NSImage(named: NSImage.Name(imageName)) {
+             appDelegate.statusItem.image = currentStatusImage
+            if status == "default" {
+                appDelegate.statusItem.image?.isTemplate = true
+            } else {
+                appDelegate.statusItem.image?.isTemplate = false
+            }
+        } else {
+            appDelegate.statusItem.image = NSImage(named: NSImage.Name("statusbar_default"))
+            appDelegate.statusItem.image?.isTemplate = true
+        }
     }
     
     // FUNCTIONALITY - Switch between main and settings views
@@ -117,7 +134,6 @@ class TimerViewController: NSViewController {
             }
         }
         
-        
         if longInputDouble != pomodoroInstance.timeLongBreak {
             // Long break has changed
             pomodoroInstance.timeLongBreak = longInputDouble
@@ -131,6 +147,7 @@ class TimerViewController: NSViewController {
         pomodoroInstance.generateTimeArray()
         
         if currentIntervalHasChanged {
+            alterStatusBarTo("default")
             resetIntervalButtonClicked(nil)
         }
     }
@@ -302,10 +319,16 @@ class TimerViewController: NSViewController {
         if isTimerRunning == false {
             runTimer()
             playPauseButton.image = NSImage(imageLiteralResourceName: "pause")
+            if currentPomodoroInterval.isBreak {
+                alterStatusBarTo("red")
+            } else {
+                alterStatusBarTo("blue")
+            }
         } else {
             timer.invalidate()
             playPauseButton.image = NSImage(imageLiteralResourceName: "play")
             isTimerRunning = false
+            alterStatusBarTo("default")
         }
     }
     
@@ -403,12 +426,18 @@ class TimerViewController: NSViewController {
                 }
                 showNotification(withTitle: title, withBody: msg)
                 changePomodoroColor(isBreak)
+                if currentPomodoroInterval.isBreak {
+                    alterStatusBarTo("red")
+                } else {
+                    alterStatusBarTo("blue")
+                }
             } else {
                 // Stop timer completely
                 timer.invalidate()
                 playPauseButton.isHidden = true
                 resetIntervalButton.isHidden = true
                 isTimerRunning = false
+                alterStatusBarTo("green")
                 
                 showNotification(withTitle: "Timer Complete!", withBody: "Long break is over. Back to work.")
                 shapeLayer.strokeColor = color(from: ColorTheme.green.rawValue)

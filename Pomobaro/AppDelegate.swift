@@ -20,7 +20,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create taskbar image and click action
         if let button = statusItem.button {
-            button.image = NSImage(named: NSImage.Name("TaskBarImage"))
+            button.image = NSImage(named: NSImage.Name("taskbar_default"))
+            button.image?.isTemplate = true
             button.action = #selector(statusBarButtonClicked(_:))
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
@@ -32,11 +33,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         popover.contentViewController = TimerViewController.freshController()
         
         // Setup event monitoring --- DISABLED FOR NOW
-//        eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
-//            if let strongSelf = self, strongSelf.popover.isShown {
-//                strongSelf.closePopover(sender: event)
-//            }
-//        }
+        eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
+            if let strongSelf = self, strongSelf.popover.isShown {
+                strongSelf.closePopover(sender: event)
+            }
+        }
     }
     
     // Status bar button clicked
