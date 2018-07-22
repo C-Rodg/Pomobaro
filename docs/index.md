@@ -28,23 +28,33 @@ Now available on the [Mac App Store](https://itunes.apple.com/)!
 
 In your menu bar.
 
+<br />
+
 ## [](#header-view)The App
 
 ![](./assets/app_work.png?raw=true)
 
 Work Interval
 
+<br />
+
 ![](./assets/app_break.png?raw=true)
 
 Break Interval
+
+<br />
 
 ![](./assets/app_complete.png?raw=true)
 
 Timer Complete
 
+<br />
+
 ![](./assets/app_settings.png?raw=true)
 
 Set Your Own Intervals
+
+<br />
 
 ## [](#header-motivation)Motivation
 
