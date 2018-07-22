@@ -8,7 +8,7 @@ Break work down into manageable intervals using the Pomodoro technique with this
 
 ## Availability
 
-Now available [here(https://apple.com/) on the MacOS app store.
+Now available [here](https://apple.com/) on the MacOS app store.
 
 ## Features
 
