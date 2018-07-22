@@ -22,15 +22,29 @@ Now available on the [Mac App Store](https://itunes.apple.com/)!
 1.  Work Interval - typically 25 minutes (4 pomodoros)
 1.  Long Break Interval - typically 15 minutes
 
-## [](#header-view)The App
-
-![](./assets/application.png?raw=true)
-
 ## [](#header-where)Where is it?
 
 ![](./assets/where.png?raw=true)
 
 In your menu bar.
+
+## [](#header-view)The App
+
+![](./assets/app_work.png?raw=true)
+
+Work Interval
+
+![](./assets/app_break.png?raw=true)
+
+Break Interval
+
+![](./assets/app_complete.png?raw=true)
+
+Timer Complete
+
+![](./assets/app_settings.png?raw=true)
+
+Set Your Own Intervals
 
 ## [](#header-motivation)Motivation
 
