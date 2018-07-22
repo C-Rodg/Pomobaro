@@ -54,8 +54,8 @@
 		25532B4620FAA3D5001E3FD6 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				25532B4720FAA3F6001E3FD6 /* ColorTheme.swift */,
 				25532B4920FAA43D001E3FD6 /* IntervalTextInput.swift */,
+				25532B4720FAA3F6001E3FD6 /* ColorTheme.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
