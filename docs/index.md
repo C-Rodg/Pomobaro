@@ -24,11 +24,11 @@ Now available on the [Mac App Store](https://itunes.apple.com/)!
 
 ## [](#header-view)The App
 
-![](https://github.com/C-Rodg/CryptoCap/blob/master/assets/crypto.png?raw=true)
+![](https://github.com/C-Rodg/Pomobaro/blob/master/assets/application.png?raw=true)
 
 ## [](#header-where)Where is it?
 
-![](https://github.com/C-Rodg/CryptoCap/blob/master/assets/where.png?raw=true)
+![](https://github.com/C-Rodg/Pomobaro/blob/master/assets/where.png?raw=true)
 
 In your menu bar.
 
