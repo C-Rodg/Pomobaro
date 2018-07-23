@@ -5,7 +5,7 @@ title: Pomobaro
 
 # [](#header-features)Features
 
-Now available on the [Mac App Store](https://itunes.apple.com/)!
+Now available on the [Mac App Store](https://itunes.apple.com/app/pomobaro/id1415437485)!
 
 - Slick & Simple UI
 - Desktop notifications when it's time to start or stop working
