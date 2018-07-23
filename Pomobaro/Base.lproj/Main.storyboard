@@ -693,6 +693,17 @@
                                 <rect key="frame" x="0.0" y="2" width="348" height="323"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
+                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gGb-hb-p4h">
+                                        <rect key="frame" x="316" y="291" width="32" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="close" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="6Yw-Pi-49n">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="handleCloseApp:" target="XfG-lQ-9wD" id="TJD-wb-TbF"/>
+                                        </connections>
+                                    </button>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ge-LV-bV1">
                                         <rect key="frame" x="76" y="135" width="196" height="106"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -834,7 +845,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="bevel" title="Restore Defaults" bezelStyle="rounded" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="eo7-6b-sXE">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system" size="11"/>
+                                            <font key="font" metaFont="smallSystem"/>
                                         </buttonCell>
                                         <connections>
                                             <action selector="restoreDefaults:" target="XfG-lQ-9wD" id="czf-i5-Gbc"/>
@@ -846,6 +857,7 @@
                     </view>
                     <connections>
                         <outlet property="backButton" destination="vJ5-c7-Mfa" id="NPP-9g-X6b"/>
+                        <outlet property="closeButton" destination="gGb-hb-p4h" id="TGr-QH-hvv"/>
                         <outlet property="longBreakInput" destination="19G-Yx-SxD" id="E9l-CZ-Nja"/>
                         <outlet property="playPauseButton" destination="GX7-HW-U2k" id="OLf-0g-yPe"/>
                         <outlet property="resetAllButton" destination="SwS-kf-1ha" id="ZnA-5f-zqU"/>
@@ -867,6 +879,7 @@
     </scenes>
     <resources>
         <image name="back" width="64" height="64"/>
+        <image name="close" width="48" height="48"/>
         <image name="play" width="64" height="64"/>
         <image name="reset_all" width="64" height="64"/>
         <image name="reset_one" width="64" height="64"/>

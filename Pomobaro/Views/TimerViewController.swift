@@ -30,6 +30,7 @@ class TimerViewController: NSViewController {
     @IBOutlet weak var resetIntervalButton: NSButton!
     @IBOutlet weak var resetAllButton: NSButton!
     @IBOutlet weak var settingsButton: NSButton!
+    @IBOutlet weak var closeButton: NSButton!
     
     // Outlets - Settings View
     @IBOutlet weak var settingsView: NSView!
@@ -176,7 +177,7 @@ class TimerViewController: NSViewController {
     
     // STYLE - Remove native button styles
     func styleControlButtons() {
-        let btns:[NSButton] = [playPauseButton, resetIntervalButton, resetAllButton, settingsButton, backButton]
+        let btns:[NSButton] = [closeButton, playPauseButton, resetIntervalButton, resetAllButton, settingsButton, backButton]
         for btn in btns {
             btn.appearance = NSAppearance(named: .aqua)
             btn.bezelStyle = .texturedSquare
@@ -335,6 +336,12 @@ class TimerViewController: NSViewController {
     // EVENT - Switch from Main View <-> Settings View
     @IBAction func handleRouteChange(_ sender: NSButton) {
         toggleSettingsView()
+    }
+    
+    // EVENT - close the application down
+    @IBAction func handleCloseApp(_ sender: NSButton) {
+        NSApplication.shared.terminate(self)
+         //NSApplication.sharedApplication().terminate(self)
     }
     
     
