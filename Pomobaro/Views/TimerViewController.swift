@@ -341,7 +341,6 @@ class TimerViewController: NSViewController {
     // EVENT - close the application down
     @IBAction func handleCloseApp(_ sender: NSButton) {
         NSApplication.shared.terminate(self)
-         //NSApplication.sharedApplication().terminate(self)
     }
     
     
