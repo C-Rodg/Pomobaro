@@ -62,6 +62,12 @@ class TimerViewController: NSViewController {
         
         // Hide settings controls
         settingsView.isHidden = true
+        
+        // Style inputs
+        styleSettingsInputs()
+        
+        // Add notification for menubar color change
+        DistributedNotificationCenter.default.addObserver(self, selector: #selector(styleSettingsInputs), name: NSNotification.Name(rawValue: "AppleInterfaceThemeChangedNotification"), object: nil)
     }
    
     // FUNCTIONALITY - Change status bar based off of current status
@@ -468,6 +474,20 @@ class TimerViewController: NSViewController {
         }
     }
     
+    // STYLE - style the inputs based off of theme color
+    @objc func styleSettingsInputs() {
+        let color = getMenuBarColor()
+        if color == "Light" {
+            workTimeInput.textColor = NSColor.black
+            shortBreakInput.textColor = NSColor.black
+            longBreakInput.textColor = NSColor.black
+        } else {
+            workTimeInput.textColor = NSColor.white
+            shortBreakInput.textColor = NSColor.white
+            longBreakInput.textColor = NSColor.white
+        }
+    }
+    
     // HELPER - Convert Hex value to CGColor
     func color(from hexString : String, withAlpha alpha: CGFloat = 1.0) -> CGColor
     {
@@ -479,6 +499,12 @@ class TimerViewController: NSViewController {
         } else {
             return NSColor.black.cgColor
         }
+    }
+    
+    // HELPER - detect menu bar color
+    func getMenuBarColor() -> String {
+        let color = UserDefaults.standard.string(forKey: "AppleInterfaceStyle") ?? "Light"
+        return color
     }
 }
 
