@@ -100,6 +100,10 @@ class TimerViewController: NSViewController {
             workTimeInput.doubleValue = pomodoroInstance.timeWork / 60
             shortBreakInput.doubleValue = pomodoroInstance.timeShortBreak / 60
             longBreakInput.doubleValue = pomodoroInstance.timeLongBreak / 60
+            
+            // Set default text input position
+            workTimeInput.becomeFirstResponder()
+            workTimeInput.currentEditor()?.selectedRange = NSRange(location: 2, length: 0)
         } else {
             // Returning home
             if validateInputIntervals() {
