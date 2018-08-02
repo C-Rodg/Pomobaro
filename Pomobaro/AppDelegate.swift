@@ -32,7 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Assign view controller to popup content
         popover.contentViewController = TimerViewController.freshController()
         
-        // Setup event monitoring --- DISABLED FOR NOW
+        // Setup event monitoring
         eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
             if let strongSelf = self, strongSelf.popover.isShown {
                 strongSelf.closePopover(sender: event)
@@ -70,6 +70,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let button = statusItem.button {
             popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
             eventMonitor?.start()
+            //NSApp.activate(ignoringOtherApps: true)
+            //popover.contentViewController?.becomeFirstResponder()
+            //popover.contentViewController?
         }
     }
     
