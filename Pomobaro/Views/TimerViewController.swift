@@ -244,13 +244,10 @@ class TimerViewController: NSViewController {
         let colorBottom = color(from: "141E30")
         let gradient  = CAGradientLayer()
         gradient.colors = [colorBottom, colorTop]
-        gradient.locations = [ 0.1, 1.0]
+        gradient.locations = [0.1, 1.0]
         gradient.frame = backgroundView.bounds
-        backgroundView.wantsLayer = true
-        backgroundView.layer?.insertSublayer(gradient, at: 0)
-        backgroundView.layer?.zPosition = -1
         
-        view.addSubview(backgroundView)
+        view.layer?.addSublayer(gradient)
     }
     
     // STYLE - Generate pomodoro indicators
