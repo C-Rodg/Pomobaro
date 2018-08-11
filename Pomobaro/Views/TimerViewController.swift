@@ -547,7 +547,9 @@ class TimerViewController: NSViewController {
                     } else {
                         msg = "\(pomodoroCount) pomodoros down. Let's take another short break."
                     }
-                    completeIndividualPomoIndicator(count: pomodoroCount)
+                    if pomoCountLabel.isHidden {
+                        completeIndividualPomoIndicator(count: pomodoroCount)
+                    }
                 }
                 showNotification(withTitle: title, withBody: msg)
                 assignCountLabelValues()
@@ -565,9 +567,11 @@ class TimerViewController: NSViewController {
                 isTimerRunning = false
                 alterStatusBarTo("green")
                 
-                showNotification(withTitle: "Timer Complete!", withBody: "Long break is over. Back to work.")
+                showNotification(withTitle: "Timer Complete!", withBody: "Long break is over. Time to start again?.")
                 shapeLayer.strokeColor = color(from: ColorTheme.green.rawValue)
-                completeAllPomoIndicitator()
+                if pomoCountLabel.isHidden {
+                    completeAllPomoIndicitator()
+                }
             }
         }
     }
