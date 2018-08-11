@@ -63,6 +63,7 @@ class PomodoroTimer {
     func resetTimer() -> PomodoroTimeInterval {
         currentIndex = 0
         pomodoroCount = 0
+        generateTimeArray()
         return timeArray[currentIndex]
     }
     

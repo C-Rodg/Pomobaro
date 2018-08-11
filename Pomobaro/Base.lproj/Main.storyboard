@@ -697,6 +697,17 @@
                                     <customView focusRingType="none" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eYD-e9-LAE">
                                         <rect key="frame" x="80" y="100" width="190" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ViN-eR-bLr">
+                                                <rect key="frame" x="0.0" y="0.0" width="190" height="33"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="X Pomodoros" drawsBackground="YES" id="g8C-0Q-789">
+                                                    <font key="font" size="14" name="Avenir-Light"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </textFieldCell>
+                                            </textField>
+                                        </subviews>
                                     </customView>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gGb-hb-p4h">
                                         <rect key="frame" x="316" y="291" width="32" height="32"/>
@@ -884,6 +895,7 @@
                         <outlet property="indicatorView" destination="eYD-e9-LAE" id="rXR-sn-2uI"/>
                         <outlet property="longBreakInput" destination="19G-Yx-SxD" id="E9l-CZ-Nja"/>
                         <outlet property="playPauseButton" destination="GX7-HW-U2k" id="OLf-0g-yPe"/>
+                        <outlet property="pomoCountLabel" destination="ViN-eR-bLr" id="30k-Mb-EAR"/>
                         <outlet property="pomodoroAmountInput" destination="5a7-9O-NMN" id="uXI-Hf-7rg"/>
                         <outlet property="resetAllButton" destination="SwS-kf-1ha" id="ZnA-5f-zqU"/>
                         <outlet property="resetIntervalButton" destination="1LC-RH-3Pp" id="usT-YX-hkJ"/>

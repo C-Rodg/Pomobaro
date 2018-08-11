@@ -32,6 +32,7 @@ class TimerViewController: NSViewController {
     @IBOutlet weak var settingsButton: NSButton!
     @IBOutlet weak var closeButton: NSButton!
     @IBOutlet weak var indicatorView: NSView!
+    @IBOutlet weak var pomoCountLabel: NSTextField!
     
     // Outlets - Settings View
     @IBOutlet weak var settingsView: NSView!
@@ -159,13 +160,31 @@ class TimerViewController: NSViewController {
         }
         
         if pomoInputInt != pomodoroInstance.totalPomodoros {
-            pomodoroInstance.totalPomodoros = pomoInputInt
             defaults.set(pomoInputInt, forKey: "totalPomodoros")
-            // TODO: RESET TIMER IN PROPER WAY
+            
+            if pomoInputInt < pomodoroInstance.currentIndex {
+                // Less pomodoros, reset timer completely
+                pomodoroInstance.totalPomodoros = pomoInputInt
+                pomodoroInstance.generateTimeArray()
+                resetButtonClicked(nil)
+            } else {
+                // More pomodoros, just continue
+                pomodoroInstance.totalPomodoros = pomoInputInt
+                pomodoroInstance.generateTimeArray()
+            }
+            
+            if pomoInputInt > 8 {
+                // Show text pomodoros
+                hidePomodoroIndicators()
+                pomoCountLabel.isHidden = false
+                assignCountLabelValues()
+            } else {
+                // Create icons
+                hidePomodoroIndicators()
+                generatePomodoroIndicators()
+                fillAndColorIndicators()
+            }
         }
-        
-        // Recreate instance timer array
-        pomodoroInstance.generateTimeArray()
         
         if currentIntervalHasChanged {
             resetIntervalButtonClicked(nil)
@@ -218,6 +237,7 @@ class TimerViewController: NSViewController {
         restoreDefaultsButton.isBordered = true
     }
     
+    
     // ANIMATION - Setup Initial tracks
     func setupInitialTracks() -> Void {
         // Indicator view
@@ -269,12 +289,20 @@ class TimerViewController: NSViewController {
         view.layer?.addSublayer(gradient)
     }
     
+    // STYLE - Assign count label values
+    func assignCountLabelValues() {
+        pomoCountLabel.stringValue = "\(pomodoroInstance.getPomodoroCount()) of \(pomodoroInstance.totalPomodoros) pomodoros"
+    }
+    
     // STYLE - Generate pomodoro indicators
     func generatePomodoroIndicators() {
         pomoIndicators = []
         if pomodoroInstance.totalPomodoros > 8 {
-            //hidePomodoroIndicators()
+            hidePomodoroIndicators()
+            assignCountLabelValues()
+            pomoCountLabel.isHidden = false
         } else {
+            pomoCountLabel.isHidden = true
             // x-path slots
             let xPaths: [Int] = [26, 46, 66, 86, 106, 126, 146, 166]
             
@@ -328,6 +356,21 @@ class TimerViewController: NSViewController {
         }
     }
     
+    // ANIMATION - color and fill already complete pomodoros
+    func fillAndColorIndicators() {
+        let currentCount = pomodoroInstance.getPomodoroCount()
+        if currentCount == 0 {
+            return
+        }
+        let instanceColor = currentPomodoroInterval.isBreak ? ColorTheme.red.rawValue : ColorTheme.blue.rawValue
+        for i in 0...currentCount - 1 {
+            if i < pomoIndicators.count {
+                pomoIndicators[i].fillColor = color(from: instanceColor)
+                pomoIndicators[i].strokeColor = color(from: instanceColor)
+            }
+        }
+    }
+    
     // FUNCTIONALITY - Reset Pomodoro indicators
     func resetPomodoroIndicators() {
         for pomo in pomoIndicators {
@@ -342,9 +385,9 @@ class TimerViewController: NSViewController {
         for pomo in pomoIndicators {
             pomo.isHidden = true
         }
-//        if let layer = indicatorView.layer, let sublayers = layer.sublayers {
-//            sublayers.forEach { $0.removeFromSuperlayer() }
-//        }
+        if let layer = indicatorView.layer, let sublayers = layer.sublayers {
+            sublayers.forEach { $0.removeFromSuperlayer() }
+        }
     }
     
     // ANIMATION - Add pulsing and fill effect
@@ -354,6 +397,9 @@ class TimerViewController: NSViewController {
     
     // ANIMATION - Helper animation for pomo indicators
     func animatePomoIndicator(for i: Int, with stringColor: String) {
+        if pomoIndicators.count == 0 {
+            return
+        }
         let indicator = pomoIndicators[i]
         indicator.fillColor = color(from: stringColor)
         indicator.strokeColor = color(from: stringColor)
@@ -404,7 +450,7 @@ class TimerViewController: NSViewController {
     
     
     // EVENT - Reset All clicked
-    @IBAction func resetButtonClicked(_ sender: NSButton) {
+    @IBAction func resetButtonClicked(_ sender: NSButton?) {
         playPauseButton.isHidden = false
         resetIntervalButton.isHidden = false
         resetPomodoroIndicators()
@@ -416,6 +462,7 @@ class TimerViewController: NSViewController {
         shapeLayer.strokeColor = getTrackColor()
         timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
         isTimerRunning = false
+        assignCountLabelValues()
         playPauseButton.image = NSImage(imageLiteralResourceName: "play")
         alterStatusBarTo("default")
     }
@@ -494,6 +541,7 @@ class TimerViewController: NSViewController {
                     completeIndividualPomoIndicator(count: pomodoroCount)
                 }
                 showNotification(withTitle: title, withBody: msg)
+                assignCountLabelValues()
                 changePomodoroColor(isBreak)
                 if currentPomodoroInterval.isBreak {
                     alterStatusBarTo("red")
@@ -511,6 +559,7 @@ class TimerViewController: NSViewController {
                 showNotification(withTitle: "Timer Complete!", withBody: "Long break is over. Back to work.")
                 shapeLayer.strokeColor = color(from: ColorTheme.green.rawValue)
                 completeAllPomoIndicitator()
+                assignCountLabelValues()
             }
         }
     }
