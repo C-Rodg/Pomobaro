@@ -15,7 +15,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     let popover:NSPopover = NSPopover()
     var eventMonitor: EventMonitor?
+    
+    // Right click menu
     let menu: NSMenu = NSMenu()
+    lazy var myPlayMenuItem : NSMenuItem = {
+        return NSMenuItem(title: "Play", action: #selector(AppDelegate.handlePlayPauseClick(_:)), keyEquivalent: "p")
+    }()
+    
+    lazy var myPauseMenuItem : NSMenuItem = {
+        return NSMenuItem(title: "Pause", action: #selector(AppDelegate.handlePlayPauseClick(_:)), keyEquivalent: "p")
+    }()
+    
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create taskbar image and click action
@@ -31,6 +41,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Assign view controller to popup content
         popover.contentViewController = TimerViewController.freshController()
+        popover.contentViewController?.loadView()
         
         // Setup event monitoring
         eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
@@ -38,6 +49,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 strongSelf.closePopover(sender: event)
             }
         }
+        
     }
     
     // Status bar button clicked
@@ -45,6 +57,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let event = NSApp.currentEvent {
             // Open context menu
             if event.type == NSEvent.EventType.rightMouseUp {
+                calculateMenuItems()
                 closePopover(sender: nil)
                 statusItem.menu = menu
                 statusItem.popUpMenu(menu)
@@ -52,6 +65,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             } else {
                 // Toggle popover view
                 togglePopover(nil)
+            }
+        }
+    }
+    
+    func calculateMenuItems() {
+        if let vc = popover.contentViewController as? TimerViewController {
+            if vc.isTimerRunning {
+                myPlayMenuItem.isHidden = true
+                myPauseMenuItem.isHidden = false
+            } else {
+                myPlayMenuItem.isHidden = false
+                myPauseMenuItem.isHidden = true
             }
         }
     }
@@ -86,12 +111,39 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
         }
     }
+    
+    // Handle toggle of play pause
+    @objc func handlePlayPauseClick(_ sender: Any?) {
+        if let vc = popover.contentViewController as? TimerViewController {
+            vc.playPauseButtonClicked(nil)
+        }
+    }
+    
+    // Handle reset one interval
+    @objc func handleResetOneInterval(_ sender: Any?) {
+        if let vc = popover.contentViewController as? TimerViewController {
+            vc.resetIntervalButtonClicked(nil)
+        }
+    }
+    
+    // Handle reset all intervals
+    @objc func handleResetAllIntervals(_ sender: Any?) {
+        if let vc = popover.contentViewController as? TimerViewController {
+            vc.resetIntervalButtonClicked(nil)
+        }
+    }
+
 
     // Create context menu
     func constructMenu() {
-        menu.addItem(NSMenuItem(title: "About Us", action: #selector(AppDelegate.openAbout(_:)), keyEquivalent: "A"))
+        menu.addItem(myPlayMenuItem)
+        menu.addItem(myPauseMenuItem)
+        myPauseMenuItem.isHidden = true
+        menu.addItem(NSMenuItem(title: "Reset One", action: #selector(AppDelegate.handleResetOneInterval(_:)), keyEquivalent: "o"))
+        menu.addItem(NSMenuItem(title: "Reset All", action: #selector(AppDelegate.handleResetAllIntervals(_:)), keyEquivalent: "r"))
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(NSMenuItem(title: "Quit Pomobaro", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: "About Us", action: #selector(AppDelegate.openAbout(_:)), keyEquivalent: "A"))
+        menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
     }
 }
 

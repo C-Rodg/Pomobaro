@@ -40,6 +40,7 @@ class TimerViewController: NSViewController {
     @IBOutlet weak var longBreakInput: NSTextField!
     @IBOutlet weak var settingsErrorMessage: NSTextField!
     @IBOutlet weak var restoreDefaultsButton: NSButton!
+    @IBOutlet weak var pomodoroAmountInput: NSTextField!
     
     // LIFECYCLE EVENT - Initial Setup
     override func viewDidLoad() {
@@ -102,8 +103,8 @@ class TimerViewController: NSViewController {
             longBreakInput.doubleValue = pomodoroInstance.timeLongBreak / 60
             
             // Set default text input position
-            workTimeInput.becomeFirstResponder()
-            workTimeInput.currentEditor()?.selectedRange = NSRange(location: 2, length: 0)
+            pomodoroAmountInput.becomeFirstResponder()
+            pomodoroAmountInput.currentEditor()?.selectedRange = NSRange(location: 2, length: 0)
         } else {
             // Returning home
             if validateInputIntervals() {
@@ -120,6 +121,7 @@ class TimerViewController: NSViewController {
         let workInputDouble = workTimeInput.doubleValue * 60
         let shortInputDouble = shortBreakInput.doubleValue * 60
         let longInputDouble = longBreakInput.doubleValue * 60
+        let pomoInputDouble = pomodoroAmountInput.doubleValue
         
         if workInputDouble == pomodoroInstance.timeWork && shortInputDouble == pomodoroInstance.timeShortBreak && longInputDouble == pomodoroInstance.timeLongBreak  {
             return
@@ -154,6 +156,8 @@ class TimerViewController: NSViewController {
             }
         }
         
+        // TODO: CHECK FOR CHANGES TO POMODORO COUNT
+        
         // Recreate instance timer array
         pomodoroInstance.generateTimeArray()
         
@@ -168,11 +172,18 @@ class TimerViewController: NSViewController {
         let workTime = workTimeInput.doubleValue
         let shortBreak = shortBreakInput.doubleValue
         let longBreak = longBreakInput.doubleValue
+        let amountPomo = pomodoroAmountInput.doubleValue
         var errorMsg = ""
         if workTime < 1.0 || longBreak < 1.0 || shortBreak < 1.0 {
             errorMsg = "All intervals must be at least 1 minute."
         } else if workTime >= 100.0 || longBreak >= 100.0 || shortBreak >= 100.0 {
             errorMsg = "Intervals must be less than 100 minutes."
+        }
+        
+        if amountPomo < 1.0 {
+            errorMsg = "Must have at least one pomodoro."
+        } else if amountPomo >= 100.0 {
+            errorMsg = "Must have less than 100 pomodoros."
         }
         
         // Show error
@@ -323,7 +334,8 @@ class TimerViewController: NSViewController {
     }
     
     // EVENT - Play/pause button clicked
-    @IBAction func playPauseButtonClicked(_ sender: Any) {
+    @IBAction func playPauseButtonClicked(_ sender: Any?) {
+        
         if isTimerRunning == false {
             runTimer()
             playPauseButton.image = NSImage(imageLiteralResourceName: "pause")
@@ -365,6 +377,7 @@ class TimerViewController: NSViewController {
         timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
         isTimerRunning = false
         playPauseButton.image = NSImage(imageLiteralResourceName: "play")
+        alterStatusBarTo("default")
     }
     
     // EVENT - Reset Interval clicked
@@ -377,6 +390,7 @@ class TimerViewController: NSViewController {
         timerLabel.stringValue = getTimeString(time: TimeInterval(currentSeconds))
         isTimerRunning = false
         playPauseButton.image = NSImage(imageLiteralResourceName: "play")
+        alterStatusBarTo("default")
     }
     
     // EVENT - Restore Default clicked

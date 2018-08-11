@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
@@ -763,15 +764,6 @@
                                 <rect key="frame" x="1" y="2" width="347" height="323"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hev-uS-Mmc">
-                                        <rect key="frame" x="38" y="252" width="291" height="17"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="Jqu-X2-ZhA">
-                                            <font key="font" metaFont="systemLight" size="11"/>
-                                            <color key="textColor" red="0.89803921568627454" green="0.18823529411764706" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vJ5-c7-Mfa" userLabel="Back Button">
                                         <rect key="frame" x="0.0" y="285" width="36" height="36"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -784,7 +776,7 @@
                                         </connections>
                                     </button>
                                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="psr-MA-vg2" userLabel="WorkTimeInput" customClass="IntervalTextInput" customModule="Pomobaro" customModuleProvider="target">
-                                        <rect key="frame" x="250" y="210" width="50" height="22"/>
+                                        <rect key="frame" x="250" y="187" width="50" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" bezelStyle="round" id="u39-mK-Hzb">
                                             <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="HsW-JZ-VgZ"/>
@@ -794,7 +786,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rbd-79-0mf" userLabel="ShortBreakInput" customClass="IntervalTextInput" customModule="Pomobaro" customModuleProvider="target">
-                                        <rect key="frame" x="250" y="160" width="50" height="22"/>
+                                        <rect key="frame" x="250" y="137" width="50" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" bezelStyle="round" id="sIg-ZI-4bY">
                                             <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="e4P-Sy-4Pc"/>
@@ -804,7 +796,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="19G-Yx-SxD" userLabel="LongBreakInput" customClass="IntervalTextInput" customModule="Pomobaro" customModuleProvider="target">
-                                        <rect key="frame" x="250" y="110" width="50" height="22"/>
+                                        <rect key="frame" x="250" y="87" width="50" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" bezelStyle="round" id="MRd-Nf-kTX">
                                             <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="4vy-HG-9Ou"/>
@@ -814,7 +806,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VC5-KH-ASI" userLabel="WorkTimeLabel">
-                                        <rect key="frame" x="40" y="208" width="147" height="22"/>
+                                        <rect key="frame" x="40" y="185" width="147" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Work Time:" drawsBackground="YES" id="6Im-rI-mkM">
                                             <font key="font" metaFont="system" size="16"/>
@@ -823,7 +815,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dsG-gw-Usx" userLabel="LongBreakLabel">
-                                        <rect key="frame" x="40" y="108" width="147" height="22"/>
+                                        <rect key="frame" x="40" y="85" width="147" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Long Break Time:" drawsBackground="YES" id="4uZ-bd-Bur">
                                             <font key="font" metaFont="system" size="16"/>
@@ -832,7 +824,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="obr-di-AvH" userLabel="ShortBreakLabel">
-                                        <rect key="frame" x="40" y="158" width="147" height="22"/>
+                                        <rect key="frame" x="40" y="135" width="147" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Short Break Time:" drawsBackground="YES" id="I27-T6-WAO">
                                             <font key="font" metaFont="system" size="16"/>
@@ -841,7 +833,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iAY-Ym-3SP">
-                                        <rect key="frame" x="40" y="53" width="125" height="23"/>
+                                        <rect key="frame" x="40" y="30" width="125" height="23"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="bevel" title="Restore Defaults" bezelStyle="rounded" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="eo7-6b-sXE">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -851,6 +843,33 @@
                                             <action selector="restoreDefaults:" target="XfG-lQ-9wD" id="czf-i5-Gbc"/>
                                         </connections>
                                     </button>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q6E-ma-bvk">
+                                        <rect key="frame" x="40" y="238" width="193" height="19"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Number of Pomodoros:" drawsBackground="YES" id="HAj-xA-HW7">
+                                            <font key="font" metaFont="system" size="16"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" red="0.078431372550000003" green="0.1176470588" blue="0.18823529410000001" alpha="0.0" colorSpace="calibratedRGB"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5a7-9O-NMN" customClass="IntervalTextInput" customModule="Pomobaro" customModuleProvider="target">
+                                        <rect key="frame" x="250" y="236" width="50" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" bezelStyle="round" id="y8G-lt-cDi">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hev-uS-Mmc">
+                                        <rect key="frame" x="38" y="270" width="291" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="Jqu-X2-ZhA">
+                                            <font key="font" metaFont="systemLight" size="11"/>
+                                            <color key="textColor" red="0.89803921568627454" green="0.18823529411764706" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
                                 </subviews>
                             </customView>
                         </subviews>
@@ -860,6 +879,7 @@
                         <outlet property="closeButton" destination="gGb-hb-p4h" id="TGr-QH-hvv"/>
                         <outlet property="longBreakInput" destination="19G-Yx-SxD" id="E9l-CZ-Nja"/>
                         <outlet property="playPauseButton" destination="GX7-HW-U2k" id="OLf-0g-yPe"/>
+                        <outlet property="pomodoroAmountInput" destination="5a7-9O-NMN" id="uXI-Hf-7rg"/>
                         <outlet property="resetAllButton" destination="SwS-kf-1ha" id="ZnA-5f-zqU"/>
                         <outlet property="resetIntervalButton" destination="1LC-RH-3Pp" id="usT-YX-hkJ"/>
                         <outlet property="restoreDefaultsButton" destination="iAY-Ym-3SP" id="QMG-Xj-1UT"/>
