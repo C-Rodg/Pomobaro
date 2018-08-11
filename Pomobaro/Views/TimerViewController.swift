@@ -11,6 +11,7 @@ import Cocoa
 class TimerViewController: NSViewController {
 
     // Timer Settings and flags
+    var isTimerComplete: Bool = false
     var currentSeconds: Double = 1500
     var timer = Timer()
     var isTimerRunning = false
@@ -432,6 +433,7 @@ class TimerViewController: NSViewController {
     // EVENT - Play/pause button clicked
     @IBAction func playPauseButtonClicked(_ sender: Any?) {
         if isTimerRunning == false {
+            isTimerComplete = false
             runTimer()
             playPauseButton.image = NSImage(imageLiteralResourceName: "pause")
             if currentPomodoroInterval.isBreak {
@@ -460,6 +462,7 @@ class TimerViewController: NSViewController {
     
     // EVENT - Reset All clicked
     @IBAction func resetButtonClicked(_ sender: NSButton?) {
+        isTimerComplete = false
         playPauseButton.isHidden = false
         resetIntervalButton.isHidden = false
         resetPomodoroIndicators()
@@ -478,6 +481,11 @@ class TimerViewController: NSViewController {
     
     // EVENT - Reset Interval clicked
     @IBAction func resetIntervalButtonClicked(_ sender: NSButton?) {
+        if isTimerComplete {
+            // Change colors of intervals
+            fillAndColorIndicators()
+        }
+        isTimerComplete = false
         timer.invalidate()
         currentPomodoroInterval  = pomodoroInstance.getCurrentInterval()
         currentSeconds = currentPomodoroInterval.timer
@@ -561,6 +569,7 @@ class TimerViewController: NSViewController {
                 }
             } else {
                 // Stop timer completely
+                isTimerComplete = true
                 timer.invalidate()
                 playPauseButton.isHidden = true
                 resetIntervalButton.isHidden = true
@@ -628,7 +637,7 @@ class TimerViewController: NSViewController {
     }
 }
 
-// Notification Delegate
+// DELEGATION - Notification Delegate
 extension TimerViewController: NSUserNotificationCenterDelegate {
     func showNotification(withTitle title: String, withBody body: String) -> Void {
         let notification = NSUserNotification()
@@ -644,7 +653,7 @@ extension TimerViewController: NSUserNotificationCenterDelegate {
     }
 }
 
-// Add cgPath to NSBezierPath
+// EXTENSION - Add cgPath to NSBezierPath
 extension NSBezierPath {
     public var cgPath: CGPath {
         let path = CGMutablePath()

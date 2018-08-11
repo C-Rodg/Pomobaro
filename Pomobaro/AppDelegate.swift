@@ -26,6 +26,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return NSMenuItem(title: "Pause", action: #selector(AppDelegate.handlePlayPauseClick(_:)), keyEquivalent: "p")
     }()
     
+    lazy var myResetOneMenuItem : NSMenuItem = {
+        return NSMenuItem(title: "Reset Interval",  action: #selector(AppDelegate.handleResetOneInterval(_:)), keyEquivalent: "o")
+    }()
+    
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create taskbar image and click action
@@ -69,13 +73,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    // Determine the proper menu items based off current timer status
     func calculateMenuItems() {
         if let vc = popover.contentViewController as? TimerViewController {
             if vc.isTimerRunning {
                 myPlayMenuItem.isHidden = true
                 myPauseMenuItem.isHidden = false
+                myResetOneMenuItem.isHidden = false
             } else {
-                myPlayMenuItem.isHidden = false
+                if !vc.isTimerComplete {
+                    myPlayMenuItem.isHidden = false
+                    myResetOneMenuItem.isHidden = false
+                } else {
+                    myPlayMenuItem.isHidden = true
+                    myResetOneMenuItem.isHidden = true
+                }
                 myPauseMenuItem.isHidden = true
             }
         }
@@ -129,7 +141,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Handle reset all intervals
     @objc func handleResetAllIntervals(_ sender: Any?) {
         if let vc = popover.contentViewController as? TimerViewController {
-            vc.resetIntervalButtonClicked(nil)
+            vc.resetButtonClicked(nil)
         }
     }
 
@@ -139,7 +151,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(myPlayMenuItem)
         menu.addItem(myPauseMenuItem)
         myPauseMenuItem.isHidden = true
-        menu.addItem(NSMenuItem(title: "Reset One", action: #selector(AppDelegate.handleResetOneInterval(_:)), keyEquivalent: "o"))
+        menu.addItem(myResetOneMenuItem)
         menu.addItem(NSMenuItem(title: "Reset All", action: #selector(AppDelegate.handleResetAllIntervals(_:)), keyEquivalent: "r"))
         menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "About Us", action: #selector(AppDelegate.openAbout(_:)), keyEquivalent: "A"))
