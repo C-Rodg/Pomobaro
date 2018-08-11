@@ -159,8 +159,13 @@ class TimerViewController: NSViewController {
             }
         }
         
+        // Set the last key and now load from database
         if pomoInputInt != pomodoroInstance.totalPomodoros {
             defaults.set(pomoInputInt, forKey: "totalPomodoros")
+        }
+        
+        
+        if pomoInputInt != pomodoroInstance.totalPomodoros {
             
             if pomoInputInt < pomodoroInstance.currentIndex {
                 // Less pomodoros, reset timer completely
@@ -184,7 +189,11 @@ class TimerViewController: NSViewController {
                 generatePomodoroIndicators()
                 fillAndColorIndicators()
             }
+        } else {
+            pomodoroInstance.getIntervalsFromDatabase()
         }
+        
+        pomodoroInstance.generateTimeArray()
         
         if currentIntervalHasChanged {
             resetIntervalButtonClicked(nil)
@@ -559,7 +568,6 @@ class TimerViewController: NSViewController {
                 showNotification(withTitle: "Timer Complete!", withBody: "Long break is over. Back to work.")
                 shapeLayer.strokeColor = color(from: ColorTheme.green.rawValue)
                 completeAllPomoIndicitator()
-                assignCountLabelValues()
             }
         }
     }
