@@ -20,6 +20,9 @@ class PomodoroTimer {
     var timeShortBreak: Double = 300
     var timeLongBreak: Double = 900
     
+    // Size
+    var totalPomodoros: Int = 4
+    
     var timeArray: [PomodoroTimeInterval] = []
     
     init() {
@@ -33,17 +36,20 @@ class PomodoroTimer {
         let work = defaults.double(forKey: "pomoWork")
         let short = defaults.double(forKey: "pomoShort")
         let long = defaults.double(forKey: "pomoLong")
+        let total = defaults.integer(forKey: "totalPomodoros")
         
         timeWork = work < 1.0 ? 1500 : work
         timeShortBreak = short < 1.0 ? 300 : short
         timeLongBreak = long < 1.0 ? 900 : long
+        totalPomodoros = total < 1 ? 4 : total
     }
     
     // Generate time array based off of current set intervals
     func generateTimeArray() {
         timeArray = []
-        for i in 0...7 {
-            if i == 7 {
+        let lastIndex:Int = totalPomodoros * 2
+        for i in 0...(lastIndex-1) {
+            if i == (lastIndex - 1) {
                 timeArray.append(PomodoroTimeInterval(timer: timeLongBreak, isBreak: true, isLongBreak: true))
             } else if i % 2 == 0 {
                 timeArray.append(PomodoroTimeInterval(timer: timeWork, isBreak: false))

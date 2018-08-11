@@ -31,6 +31,7 @@ class TimerViewController: NSViewController {
     @IBOutlet weak var resetAllButton: NSButton!
     @IBOutlet weak var settingsButton: NSButton!
     @IBOutlet weak var closeButton: NSButton!
+    @IBOutlet weak var indicatorView: NSView!
     
     // Outlets - Settings View
     @IBOutlet weak var settingsView: NSView!
@@ -101,6 +102,7 @@ class TimerViewController: NSViewController {
             workTimeInput.doubleValue = pomodoroInstance.timeWork / 60
             shortBreakInput.doubleValue = pomodoroInstance.timeShortBreak / 60
             longBreakInput.doubleValue = pomodoroInstance.timeLongBreak / 60
+            pomodoroAmountInput.integerValue = pomodoroInstance.totalPomodoros
             
             // Set default text input position
             pomodoroAmountInput.becomeFirstResponder()
@@ -121,9 +123,9 @@ class TimerViewController: NSViewController {
         let workInputDouble = workTimeInput.doubleValue * 60
         let shortInputDouble = shortBreakInput.doubleValue * 60
         let longInputDouble = longBreakInput.doubleValue * 60
-        let pomoInputDouble = pomodoroAmountInput.doubleValue
+        let pomoInputInt = pomodoroAmountInput.integerValue
         
-        if workInputDouble == pomodoroInstance.timeWork && shortInputDouble == pomodoroInstance.timeShortBreak && longInputDouble == pomodoroInstance.timeLongBreak  {
+        if workInputDouble == pomodoroInstance.timeWork && shortInputDouble == pomodoroInstance.timeShortBreak && longInputDouble == pomodoroInstance.timeLongBreak && pomoInputInt == pomodoroInstance.totalPomodoros {
             return
         }
         
@@ -156,13 +158,16 @@ class TimerViewController: NSViewController {
             }
         }
         
-        // TODO: CHECK FOR CHANGES TO POMODORO COUNT
+        if pomoInputInt != pomodoroInstance.totalPomodoros {
+            pomodoroInstance.totalPomodoros = pomoInputInt
+            defaults.set(pomoInputInt, forKey: "totalPomodoros")
+            // TODO: RESET TIMER IN PROPER WAY
+        }
         
         // Recreate instance timer array
         pomodoroInstance.generateTimeArray()
         
         if currentIntervalHasChanged {
-            alterStatusBarTo("default")
             resetIntervalButtonClicked(nil)
         }
     }
@@ -172,7 +177,7 @@ class TimerViewController: NSViewController {
         let workTime = workTimeInput.doubleValue
         let shortBreak = shortBreakInput.doubleValue
         let longBreak = longBreakInput.doubleValue
-        let amountPomo = pomodoroAmountInput.doubleValue
+        let amountPomo = pomodoroAmountInput.integerValue
         var errorMsg = ""
         if workTime < 1.0 || longBreak < 1.0 || shortBreak < 1.0 {
             errorMsg = "All intervals must be at least 1 minute."
@@ -180,9 +185,9 @@ class TimerViewController: NSViewController {
             errorMsg = "Intervals must be less than 100 minutes."
         }
         
-        if amountPomo < 1.0 {
+        if amountPomo < 1 {
             errorMsg = "Must have at least one pomodoro."
-        } else if amountPomo >= 100.0 {
+        } else if amountPomo >= 100 {
             errorMsg = "Must have less than 100 pomodoros."
         }
         
@@ -215,6 +220,9 @@ class TimerViewController: NSViewController {
     
     // ANIMATION - Setup Initial tracks
     func setupInitialTracks() -> Void {
+        // Indicator view
+        indicatorView.wantsLayer = true
+        
         let circularPath = NSBezierPath()
         circularPath.appendArc(withCenter: .zero, radius: CGFloat(125), startAngle: CGFloat(0), endAngle: CGFloat(2 * Double.pi), clockwise: true)
         
@@ -245,7 +253,7 @@ class TimerViewController: NSViewController {
         timerView.layer?.addSublayer(shapeLayer)
         
         // Create indicators
-        createPomodoroIndicators()
+        generatePomodoroIndicators()
     }
     
     // STYLE - Create the gradient background
@@ -262,21 +270,46 @@ class TimerViewController: NSViewController {
     }
     
     // STYLE - Generate pomodoro indicators
-    func createPomodoroIndicators() {
-        let xPaths: [Int] = [144, 164, 184, 204]
-        for x in xPaths {
+    func generatePomodoroIndicators() {
+        pomoIndicators = []
+        if pomodoroInstance.totalPomodoros > 8 {
+            print("HIDE INDICATORS AND SHOW COUNT")
+        } else {
+            // Calculate where indicators should be
             let circularPath = NSBezierPath()
             circularPath.appendArc(withCenter: .zero, radius: CGFloat(6), startAngle: CGFloat(0), endAngle: CGFloat(2 * Double.pi), clockwise: true)
             circularPath.close()
             
-            let trackLayer = CAShapeLayer()
-            trackLayer.path = circularPath.cgPath
-            trackLayer.lineWidth = 2
-            trackLayer.fillColor = NSColor.clear.cgColor
-            trackLayer.strokeColor = color(from: ColorTheme.blue.rawValue, withAlpha: 0.4)
-            trackLayer.position = CGPoint(x: x, y: 110)
-            timerView.layer?.addSublayer(trackLayer)
-            pomoIndicators.append(trackLayer)
+            // x-path slots
+            let xPaths: [Int] = [26, 46, 66, 86, 106, 126, 146, 166]
+            
+            var startPosition = 0
+            let slots = xPaths.count - 1
+            let len = pomodoroInstance.totalPomodoros
+            var itemsAfter = slots - len
+            while (startPosition < itemsAfter || startPosition != itemsAfter) && itemsAfter >= 0 {
+                startPosition += 1
+                itemsAfter = slots - len - startPosition
+            }
+            
+            let isEven = pomodoroInstance.totalPomodoros % 2 == 0
+            
+            for x in startPosition...(startPosition + len - 1) {
+                let circularPath = NSBezierPath()
+                circularPath.appendArc(withCenter: .zero, radius: CGFloat(6), startAngle: CGFloat(0), endAngle: CGFloat(2 * Double.pi), clockwise: true)
+                circularPath.close()
+                let trackLayer = CAShapeLayer()
+                trackLayer.path = circularPath.cgPath
+                trackLayer.lineWidth = 2
+                trackLayer.fillColor = NSColor.clear.cgColor
+                trackLayer.strokeColor = color(from: ColorTheme.blue.rawValue, withAlpha: 0.4)
+                let xPosition = isEven ? xPaths[x] : xPaths[x] + 9
+                trackLayer.position = CGPoint(x: xPosition, y: 15)
+                indicatorView.layer?.addSublayer(trackLayer)
+                pomoIndicators.append(trackLayer)
+            }
+            
+            
         }
     }
     
@@ -297,12 +330,19 @@ class TimerViewController: NSViewController {
         }
     }
     
-    // FUNCTIONALITY - Reset Pomodor indicators
+    // FUNCTIONALITY - Reset Pomodoro indicators
     func resetPomodoroIndicators() {
         for pomo in pomoIndicators {
             pomo.removeAllAnimations()
             pomo.fillColor = CGColor.clear
             pomo.strokeColor = color(from: ColorTheme.blue.rawValue, withAlpha: 0.4)
+        }
+    }
+    
+    // FUNCTIONALITY - Hide Pomodoro indicators
+    func hidePomodoroIndicators() {
+        for pomo in pomoIndicators {
+            pomo.isHidden = true
         }
     }
     
@@ -335,7 +375,6 @@ class TimerViewController: NSViewController {
     
     // EVENT - Play/pause button clicked
     @IBAction func playPauseButtonClicked(_ sender: Any?) {
-        
         if isTimerRunning == false {
             runTimer()
             playPauseButton.image = NSImage(imageLiteralResourceName: "pause")
@@ -441,11 +480,12 @@ class TimerViewController: NSViewController {
                 // Set Notification mesage
                 if isBreak {
                     title = "Short Break!"
-                    if (pomodoroCount == 1) {
-                        msg = "1 pomodoro down. Let's take a short break."
-                    } else if newInterval.isLongBreak {
+                    if newInterval.isLongBreak {
                         title = "Long Break!"
-                        msg = "4 pomodoros down. Let's take a long break."
+                        let messageStart = pomodoroCount > 1 ? "\(pomodoroCount) pomodoros down." : "1 pomodoro down."
+                        msg = messageStart + "  Let's take a long break."
+                    } else if pomodoroCount == 1 {
+                        msg = "1 pomodoro down. Let's take a short break."
                     } else {
                         msg = "\(pomodoroCount) pomodoros down. Let's take another short break."
                     }
@@ -496,10 +536,12 @@ class TimerViewController: NSViewController {
             workTimeInput.textColor = NSColor.black
             shortBreakInput.textColor = NSColor.black
             longBreakInput.textColor = NSColor.black
+            pomodoroAmountInput.textColor = NSColor.black
         } else {
             workTimeInput.textColor = NSColor.white
             shortBreakInput.textColor = NSColor.white
             longBreakInput.textColor = NSColor.white
+            pomodoroAmountInput.textColor = NSColor.white
         }
     }
     
