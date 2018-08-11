@@ -273,13 +273,8 @@ class TimerViewController: NSViewController {
     func generatePomodoroIndicators() {
         pomoIndicators = []
         if pomodoroInstance.totalPomodoros > 8 {
-            print("HIDE INDICATORS AND SHOW COUNT")
+            //hidePomodoroIndicators()
         } else {
-            // Calculate where indicators should be
-            let circularPath = NSBezierPath()
-            circularPath.appendArc(withCenter: .zero, radius: CGFloat(6), startAngle: CGFloat(0), endAngle: CGFloat(2 * Double.pi), clockwise: true)
-            circularPath.close()
-            
             // x-path slots
             let xPaths: [Int] = [26, 46, 66, 86, 106, 126, 146, 166]
             
@@ -287,7 +282,10 @@ class TimerViewController: NSViewController {
             let slots = xPaths.count - 1
             let len = pomodoroInstance.totalPomodoros
             var itemsAfter = slots - len
-            while (startPosition < itemsAfter || startPosition != itemsAfter) && itemsAfter >= 0 {
+            while startPosition < itemsAfter {
+                if startPosition == itemsAfter {
+                    break;
+                }
                 startPosition += 1
                 itemsAfter = slots - len - startPosition
             }
@@ -344,6 +342,9 @@ class TimerViewController: NSViewController {
         for pomo in pomoIndicators {
             pomo.isHidden = true
         }
+//        if let layer = indicatorView.layer, let sublayers = layer.sublayers {
+//            sublayers.forEach { $0.removeFromSuperlayer() }
+//        }
     }
     
     // ANIMATION - Add pulsing and fill effect
@@ -437,6 +438,7 @@ class TimerViewController: NSViewController {
         workTimeInput.doubleValue = 25
         shortBreakInput.doubleValue = 5
         longBreakInput.doubleValue = 15
+        pomodoroAmountInput.integerValue = 4
     }
     
     // FUNCTIONALITY - Run Timer loop
