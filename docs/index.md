@@ -32,13 +32,13 @@ Now available on the [Mac App Store](https://itunes.apple.com/app/pomobaro/id141
 
 - Play/Pause: Starts or stops the timer. This button is found in the bottom left corner of the main screen.
 
--Reset Current Interval: Resets whatever the current interval is - can be a pomodoro (work interval), short break, or long break. This is the '1' button in the bottom right corner of the main screen.
+- Reset Current Interval: Resets whatever the current interval is - can be a pomodoro (work interval), short break, or long break. This is the '1' button in the bottom right corner of the main screen.
 
--Reset All Intervals: Resets the entire timer. This can be found in the very bottom right corner of the main screen.
+- Reset All Intervals: Resets the entire timer. This can be found in the very bottom right corner of the main screen.
 
--Exit: Quits the application. This is the 'X' in the top right corner of the main screen.
+- Exit: Quits the application. This is the 'X' in the top right corner of the main screen.
 
--Settings Button: Navigates to the settings view. This is the gear icon in the top left corner of the main screen.
+- Settings Button: Navigates to the settings view. This is the gear icon in the top left corner of the main screen.
 
 ## [](#header-view)The App
 
