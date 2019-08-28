@@ -1,5 +1,7 @@
 # Pomobaro
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/57435258-8ad5-42a3-ad14-2a880d5bcc33/deploy-status)](https://app.netlify.com/sites/cr-pomobaro/deploys)
+
 A pomodoro timer that lives in your menu bar.
 
 ## Description
