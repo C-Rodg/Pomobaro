@@ -9,7 +9,8 @@ Now available on the [Mac App Store](https://itunes.apple.com/app/pomobaro/id141
 
 - Slick & Simple UI
 - Desktop notifications when it's time to start or stop working
-- Set custom work intervals, short break intervals, and long break intervals
+- Set custom times for short breaks, long breaks, and work intervals
+- Customize the amount of pomodoros needed before reaching your long break
 
 ## [](#header-intervals)Order of Intervals
 

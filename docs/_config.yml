@@ -2,4 +2,4 @@ theme: jekyll-theme-minimal
 title: Pomobaro
 description: A pomodoro timer that lives in your menu bar.
 logo: ./assets/pomobaro-icon.png
-show_downloads: true
+show_downloads: false
